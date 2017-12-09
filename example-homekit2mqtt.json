@@ -3,169 +3,188 @@
     "service": "TemperatureSensor",
     "name": "Temperatur Wohnzimmer",
     "topic": {
-      "statusTemperature": "cul/status/Temperatur Wohnzimmer"
+      "statusTemperature": "knx/status/Heizen/Temperatur/WZ"
     },
-    "manufacturer": "cul2mqtt - ELV HMS FS20",
-    "model": "HMS100T"
-  },
-
-
-  "hm//Fenster Hobbyraum": {
-    "service": "ContactSensor",
-    "name": "Fenster Hobbyraum",
-    "topic": {
-      "statusContactSensorState": "hm/status/Fenster Hobbyraum/STATE",
-      "statusLowBattery": "hm/status/Fenster Hobbyraum/LOWBAT"
-    },
+    "manufacturer": "knx2mqtt",
+    "model": "TS2",
+    "id": "Temperatur Wohnzimmer",
     "payload": {
-      "onContactDetected": 0,
-      "onLowBattery": 1
+      "fahrenheit": false
     },
-    "manufacturer": "hm2mqtt - Homematic",
-    "model": "SHUTTER_CONTACT"
+    "config": {}
   },
-
-
-  "var//Bewegung/Keller": {
-    "service": "MotionSensor",
-    "name": "Bewegungsmelder Keller",
+  "Temperatur Arbeitszimmer": {
+    "service": "TemperatureSensor",
+    "name": "Temperatur Arbeitszimmer",
     "topic": {
-      "statusMotionDetected": "var/status/Bewegung/Keller"
+      "statusTemperature": "knx/status/Heizen/Temperatur/AZ"
     },
+    "manufacturer": "knx2mqtt",
+    "model": "TS2",
+    "id": "Temperatur Arbeitszimmer",
     "payload": {
-      "onMotionDetected": 1
+      "fahrenheit": false
     },
-    "manufacturer": "Generic",
-    "model": "Motion Sensor"
+    "config": {}
   },
-
-
-  "hm//Licht Arbeitsfläche": {
+  "Temperatur Bad": {
+    "service": "TemperatureSensor",
+    "name": "Temperatur Bad",
+    "topic": {
+      "statusTemperature": "knx/status/Heizen/Temperatur/Bad"
+    },
+    "manufacturer": "knx2mqtt",
+    "model": "TS2",
+    "id": "Temperatur Bad",
+    "payload": {
+      "fahrenheit": false
+    },
+    "config": {}
+  },
+  "Temperatur Paul": {
+    "service": "TemperatureSensor",
+    "name": "Temperatur Paul",
+    "topic": {
+      "statusTemperature": "knx/status/Heizen/Temperatur/Paul"
+    },
+    "manufacturer": "knx2mqtt",
+    "model": "TS2",
+    "id": "Temperatur Paul",
+    "payload": {
+      "fahrenheit": false
+    },
+    "config": {}
+  },
+  "Temperatur Schlafzimmer": {
+    "service": "TemperatureSensor",
+    "name": "Temperatur Schlafzimmer",
+    "topic": {
+      "statusTemperature": "knx/status/Heizen/Temperatur/SZ"
+    },
+    "manufacturer": "knx2mqtt",
+    "model": "TS2",
+    "id": "Temperatur Schlafzimmer",
+    "payload": {
+      "fahrenheit": false
+    },
+    "config": {}
+  },
+  "WZ Steckdose Glasschrank": {
+    "id": "WZ Steckdose Glasschrank",
+    "name": "Glasschrank",
     "service": "Lightbulb",
-    "name": "Licht Arbeitsfläche",
+    "manufacturer": "knx2mqtt",
+    "model": "Light",
     "topic": {
-      "setOn": "hm/set/Licht Arbeitsfläche/STATE",
-      "statusOn": "hm/status/Licht Arbeitsfläche/STATE"
+      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Steckdose Glasschrank",
+      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Steckdose Glasschrank"
     },
     "payload": {
       "onTrue": 1,
-      "onFalse": 0
-    },
-    "manufacturer": "hm2mqtt - Homematic",
-    "model": "SWITCH"
-  },
-
-
-  "hm//Licht Esstisch": {
-    "service": "Lightbulb",
-    "name": "Licht Esstisch",
-    "topic": {
-      "setOn": "hm/set/Licht Esstisch/LEVEL",
-      "setBrightness": "hm/set/Licht Esstisch/LEVEL",
-      "statusOn": "hm/status/Licht Esstisch/LEVEL",
-      "statusBrightness": "hm/status/Licht Esstisch/LEVEL"
-    },
-    "payload": {
-      "brightnessFactor": 0.01,
-      "onTrue": 1.0,
-      "onFalse": 0.0
-    },
-    "manufacturer": "hm2mqtt - Homematic",
-    "model": "DIMMER"
-  },
-
-
-  "hue//lights/Hobbyraum": {
-    "service": "Lightbulb",
-    "name": "Licht Hobbyraum",
-    "topic": {
-      "setOn": "hue/set/lights/Hobbyraum/on",
-      "setBrightness": "hue/set/lights/Hobbyraum/bri",
-      "statusOn": "hue/status/lights/Hobbyraum/on",
-      "statusBrightness": "hue/status/lights/Hobbyraum/bri",
-      "identify": "hue/set/lights/Hobbyraum/alert"
-    },
-    "payload": {
-      "onTrue": true,
-      "onFalse": false,
-      "brightnessFactor": 2.54,
-      "identify": "select"
-    },
-    "manufacturer": "hue2mqtt - Hue",
-    "model": "dimmable light"
-  },
-
-
-  "hue//lights/Bad": {
-    "service": "Lightbulb",
-    "name": "Licht Bad LED",
-    "topic": {
-      "setOn": "hue/set/lights/Bad",
-      "setBrightness": "hue/set/lights/Bad",
-      "setHue": "hue/set/lights/Bad/hue",
-      "setSaturation": "hue/set/lights/Bad/sat",
-      "statusOn": "hue/status/lights/Bad",
-      "statusBrightness": "hue/status/lights/Bad",
-      "statusHue": "hue/status/lights/Bad/hue",
-      "statusSaturation": "hue/status/lights/Bad/sat",
-      "identify": "hue/set/lights/Bad/alert"
-    },
-    "payload": {
-      "onTrue": 254,
       "onFalse": 0,
-      "brightnessFactor": 2.54,
-      "hueFactor": 181.327,
-      "saturationFactor": 2.54,
-      "identify": "select"
+      "brightnessFactor": "",
+      "hueFactor": "",
+      "saturationFactor": ""
     },
-    "manufacturer": "hue2mqtt - Hue",
-    "model": "color light"
+    "config": {}
   },
-
-  "hm//Rollladen Garten": {
-    "service":  "WindowCovering",
-    "name": "Rollladen Garten",
+  "WZ Steckdose Fensterbank": {
+    "id": "WZ Steckdose Fensterbank",
+    "name": "Fensterbank",
+    "service": "Lightbulb",
+    "manufacturer": "knx2mqtt",
+    "model": "Light",
     "topic": {
-      "setTargetPosition":  "hm/set/Rollladen Garten:1/LEVEL",
-      "statusTargetPosition":  "hm/status/Rollladen Garten:1/LEVEL_NOTWORKING",
-      "statusCurrentPosition":  "hm/status/Rollladen Garten:1/LEVEL_NOTWORKING",
-      "statusPositionState":  "hm/status/Rollladen Garten:1/DIRECTION"
+      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Steckdose Fensterbank",
+      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Steckdose Fensterbank"
     },
     "payload": {
-      "targetPositionFactor": 0.01,
-      "currentPositionFactor": 0.01,
-      "positionStatusIncreasing": 1,
-      "positionStatusDecreasing": 2
+      "onTrue": 1,
+      "onFalse": 0,
+      "brightnessFactor": "",
+      "hueFactor": "",
+      "saturationFactor": ""
     },
-    "manufacturer": "hm2mqtt - Homematic",
-    "model": "BLIND"
+    "config": {}
   },
-
-  "hm//Keymatic": {
-    "service": "LockMechanism",
-    "name": "Keymatic",
+  "WZ Licht Decke": {
+    "id": "WZ Licht Decke",
+    "name": "Wohnzimmer",
+    "service": "Lightbulb",
+    "manufacturer": "knx2mqtt",
+    "model": "Light",
     "topic": {
-      "setLock": "hm/set/Keymatic:1/STATE",
-      "statusLock": "hm/status/Keymatic:1/STATE_NOTWORKING"
+      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Licht Decke",
+      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Licht Decke",
+      "setBrightness": "knx/set/Licht & Steckdosen/Wert/WZ Licht Decke",
+      "statusBrightness": "knx/status/Licht & Steckdosen/Rückmeldung Wert/WZ Licht Decke"
     },
     "payload": {
-      "lockUnsecured": 1,
-      "lockSecured": 0
+      "onTrue": 1,
+      "onFalse": 0,
+      "brightnessFactor": "",
+      "hueFactor": "",
+      "saturationFactor": ""
     },
-    "manufacturer": "hm2mqtt - Homematic",
-    "model": "KEYMATIC"
+    "config": {}
   },
-
-  "hm//Heizung Hobbyraum": {
-    "service": "Thermostat",
-    "name": "Heizung Hobbyraum",
+  "WZ Licht Esstisch": {
+    "id": "WZ Licht Esstisch",
+    "name": "Esstisch",
+    "service": "Lightbulb",
+    "manufacturer": "knx2mqtt",
+    "model": "Light",
     "topic": {
-      "setTargetTemperature": "hm/set/Temperatur Hobbyraum Soll/SETPOINT",
-      "statusTargetTemperature": "hm/status/Temperatur Hobbyraum Soll/SETPOINT",
-      "statusCurrentTemperature": "hm/status/Temperatur Hobbyraum Ist/TEMPERATURE",
-      "statusCurrentRelativeHumidity": "hm/status/Temperatur Hobbyraum Ist/HUMIDITY"
+      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Licht Esstisch",
+      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Licht Esstisch",
+      "setBrightness": "knx/set/Licht & Steckdosen/Wert/WZ Licht Esstisch",
+      "statusBrightness": "knx/set/Licht & Steckdosen/Rückmeldung Wert/WZ Licht Esstisch"
     },
-    "manufacturer": "hm2mqtt - Homematic",
-    "model": "CLIMATECONTROL_REGULATOR"
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0,
+      "brightnessFactor": "",
+      "hueFactor": "",
+      "saturationFactor": ""
+    },
+    "config": {}
+  },
+  "WZ Wandlicht Spieleck": {
+    "id": "WZ Wandlicht Spieleck",
+    "name": "Wandlicht",
+    "service": "Lightbulb",
+    "manufacturer": "knx2mqtt",
+    "model": "Light",
+    "topic": {
+      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Wandlicht Spieleck",
+      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Wandlicht Spieleck"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0,
+      "brightnessFactor": "",
+      "hueFactor": "",
+      "saturationFactor": ""
+    },
+    "config": {}
+  },
+  "WZ Stehlampe": {
+    "id": "WZ Wandlicht Stehlampe",
+    "name": "Stehlampe",
+    "service": "Lightbulb",
+    "manufacturer": "knx2mqtt",
+    "model": "Light",
+    "topic": {
+      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Steckdose hinten B",
+      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Steckdose hinten B"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0,
+      "brightnessFactor": "",
+      "hueFactor": "",
+      "saturationFactor": ""
+    },
+    "config": {}
   }
 }
