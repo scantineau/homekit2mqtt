@@ -169,7 +169,7 @@
     "config": {}
   },
   "WZ Stehlampe": {
-    "id": "WZ Wandlicht Stehlampe",
+    "id": "WZ Stehlampe",
     "name": "Stehlampe",
     "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
@@ -186,5 +186,73 @@
       "saturationFactor": ""
     },
     "config": {}
+  },
+  "Thermostat Haus": {
+    "id": "Thermostat Haus",
+    "name": "Heizung",
+    "service": "Thermostat",
+    "manufacturer": "Buderus",
+    "model": "KM200",
+    "topic": {
+      "setTargetTemperature": "km200/set/heatingCircuits/hc1/temperatureLevels/day",
+      "statusTargetTemperature": "km200/status/heatingCircuits/hc1/temperatureLevels/day",
+      "statusCurrentTemperature": "km200/status/heatingCircuits/hc1/roomtemperature"
+    },
+    "payload": {},
+    "config": {}
+  },
+  "Treppe Licht Decke": {
+    "id": "Treppe Licht Decke",
+    "name": "KNX Treppe Licht Decke",
+    "service": "Lightbulb",
+    "manufacturer": "knx2mqtt",
+    "model": "Light",
+    "topic": {
+      "setOn": "knx/set/Licht & Steckdosen/Schalten/Treppe Licht Decke",
+      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/Treppe Licht Decke"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0,
+      "brightnessFactor": "",
+      "hueFactor": "",
+      "saturationFactor": ""
+    }
+  },
+  "Treppe Licht Wand": {
+    "id": "Treppe Licht Wand",
+    "name": "KNX Treppe Licht Wand",
+    "service": "Lightbulb",
+    "manufacturer": "knx2mqtt",
+    "model": "Light",
+    "topic": {
+      "setOn": "knx/set/Licht & Steckdosen/Schalten/Treppe Licht Wand",
+      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/Treppe Licht Wand"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0,
+      "brightnessFactor": "",
+      "hueFactor": "",
+      "saturationFactor": ""
+    }
+  },
+  "Treppe Licht Schrank": {
+    "id": "Treppe Licht Schrank",
+    "name": "KNX Treppe Licht Schrank",
+    "service": "Lightbulb",
+    "manufacturer": "knx2mqtt",
+    "model": "Light",
+    "topic": {
+      "setOn": "knx/set/Licht & Steckdosen/Schalten/Treppe Licht Schrank",
+      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/Treppe Licht Schrank"
+    },
+    "payload": {
+      "onTrue": 1,
+      "onFalse": 0,
+      "brightnessFactor": "",
+      "hueFactor": "",
+      "saturationFactor": ""
+    }
   }
 }

@@ -26,6 +26,8 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
 
 `sudo npm install -g homekit2mqtt --unsafe-perm`   
 
+`npm i --unsafe-perm -only=production`
+
 ## Command Line Options
 
 <pre>
@@ -486,6 +488,16 @@ payload
 * positionStatusDecreasing (optional)
 * positionStatusIncreasing (optional)
 * identify (optional)
+
+## Build and run local Docker container
+
+    docker build -t homekit2mqtt .
+
+    docker run --env-file ./homekit.env -v $PWD:/data  -it homekit2mqtt 
+
+    docker run --env-file /Volumes/data/smarthome/homekit2mqtt.env -v /Volumes/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
+
+    docker run --env-file /volume1/data/smarthome/homekit2mqtt.env -v /volume1/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
 
 
 ## License
