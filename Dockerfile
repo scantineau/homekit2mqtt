@@ -1,14 +1,18 @@
-# from https://codefresh.io/blog/node_docker_multistage/
+FROM node:9.2-stretch AS base
 
-#
-# ---- Base Node ----
-FROM  mhart/alpine-node:8 AS base
-# install node
-RUN apk add --no-cache tini avahi-compat-libdns_sd dbus avahi openrc
-# set working directory
+# Set environment variables
+ENV DEBIAN_FRONTEND noninteractive
+ENV TERM xterm
+
+# Install dependencies and tools
+RUN apt-get update; \
+    apt-get install -y apt-utils apt-transport-https; \
+    apt-get install -y curl wget; \
+    apt-get install -y libnss-mdns avahi-discover libavahi-compat-libdnssd-dev libkrb5-dev; \
+#    apt-get install -y ffmpeg; \
+    apt-get install -y nano vim
+
 WORKDIR /root/app
-# Set tini as entrypoint
-ENTRYPOINT ["/sbin/tini", "--"]
 # copy project file
 COPY package.json .
 
@@ -16,18 +20,12 @@ COPY package.json .
 #
 # ---- Dependencies ----
 FROM base AS dependencies
-RUN apk add --no-cache python build-base
-#RUN apk add --no-cache libffi-dev openssl-dev avahi-compat-libdns_sd avahi-dev 
-RUN apk add --no-cache libffi-dev openssl-dev avahi-dev 
-#RUN apk add --no-cache libsodium libtool autoconf automake
 # install node packages
 COPY package-lock.json .
 RUN npm set progress=false && npm config set depth 0
 RUN npm i --unsafe-perm -only=production 
 # copy production node_modules aside
 RUN cp -R node_modules prod_node_modules
-# install ALL node_modules, including 'devDependencies'
-#RUN npm --unsafe-perm install
 
 #
 # ---- Release ----
