@@ -11,7 +11,7 @@ WORKDIR /root/app
 ENTRYPOINT ["/sbin/tini", "--"]
 # copy project file
 COPY package.json .
-COPY package-lock.json .
+
  
 #
 # ---- Dependencies ----
@@ -21,6 +21,7 @@ RUN apk add --no-cache python build-base
 RUN apk add --no-cache libffi-dev openssl-dev avahi-dev 
 #RUN apk add --no-cache libsodium libtool autoconf automake
 # install node packages
+COPY package-lock.json .
 RUN npm set progress=false && npm config set depth 0
 RUN npm i --unsafe-perm -only=production 
 # copy production node_modules aside
@@ -30,16 +31,21 @@ RUN cp -R node_modules prod_node_modules
 
 #
 # ---- Release ----
-FROM mhart/alpine-node:8
+FROM base
 WORKDIR /root/app
 # copy production node_modules
 COPY --from=dependencies /root/app/prod_node_modules ./node_modules
+# MISC settings
+COPY avahi-daemon.conf /etc/avahi/avahi-daemon.conf
+
+USER root
+RUN mkdir -p /var/run/dbus
+
 # copy app sources
-COPY package.json .
 COPY config.js .
 COPY index.js .
 COPY services.json .
-COPY accessories .
+COPY ./accessories/ ./accessories/
 EXPOSE 51826
 EXPOSE 51888
 VOLUME ["/data"]
