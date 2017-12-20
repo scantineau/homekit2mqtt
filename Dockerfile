@@ -9,7 +9,6 @@ RUN apt-get update; \
     apt-get install -y apt-utils apt-transport-https; \
     apt-get install -y curl wget; \
     apt-get install -y libnss-mdns avahi-discover libavahi-compat-libdnssd-dev libkrb5-dev; \
-#    apt-get install -y ffmpeg; \
     apt-get install -y nano vim
 
 WORKDIR /root/app
@@ -44,7 +43,8 @@ COPY config.js .
 COPY index.js .
 COPY services.json .
 COPY ./accessories/ ./accessories/
+COPY run.sh .
 EXPOSE 51826
 EXPOSE 51888
 VOLUME ["/data"]
-CMD ./index.js 
+CMD ["/root/app/run.sh"]
