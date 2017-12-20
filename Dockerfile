@@ -4,7 +4,7 @@
 # ---- Base Node ----
 FROM  mhart/alpine-node:8 AS base
 # install node
-RUN apk add --no-cache tini avahi-compat-libdns_sd
+RUN apk add --no-cache tini avahi-compat-libdns_sd dbus avahi openrc
 # set working directory
 WORKDIR /root/app
 # Set tini as entrypoint
