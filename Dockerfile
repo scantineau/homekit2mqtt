@@ -1,3 +1,5 @@
+#see https://github.com/marcoraddatz/homebridge-docker/blob/master/Dockerfile
+
 FROM node:9.2-stretch AS base
 
 # Set environment variables
@@ -43,6 +45,7 @@ COPY config.js .
 COPY index.js .
 COPY services.json .
 COPY ./accessories/ ./accessories/
+COPY ./ui/ ./ui/
 COPY run.sh .
 EXPOSE 51826
 EXPOSE 51888
