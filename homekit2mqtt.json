@@ -1,258 +1,351 @@
 {
   "Temperatur Wohnzimmer": {
-    "service": "TemperatureSensor",
     "name": "Temperatur Wohnzimmer",
-    "topic": {
-      "statusTemperature": "knx/status/Heizen/Temperatur/WZ"
-    },
     "manufacturer": "knx2mqtt",
     "model": "TS2",
     "id": "Temperatur Wohnzimmer",
-    "payload": {
-      "fahrenheit": false
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Temperatur Wohnzimmer",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "knx/status/Heizen/Temperatur/WZ"
+        },
+        "payload": {
+          "fahrenheit": false
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Temperatur Arbeitszimmer": {
-    "service": "TemperatureSensor",
     "name": "Temperatur Arbeitszimmer",
-    "topic": {
-      "statusTemperature": "knx/status/Heizen/Temperatur/AZ"
-    },
     "manufacturer": "knx2mqtt",
     "model": "TS2",
     "id": "Temperatur Arbeitszimmer",
-    "payload": {
-      "fahrenheit": false
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Temperatur Arbeitszimmer",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "knx/status/Heizen/Temperatur/AZ"
+        },
+        "payload": {
+          "fahrenheit": false
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Temperatur Bad": {
-    "service": "TemperatureSensor",
     "name": "Temperatur Bad",
-    "topic": {
-      "statusTemperature": "knx/status/Heizen/Temperatur/Bad"
-    },
     "manufacturer": "knx2mqtt",
     "model": "TS2",
     "id": "Temperatur Bad",
-    "payload": {
-      "fahrenheit": false
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Temperatur Bad",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "knx/status/Heizen/Temperatur/Bad"
+        },
+        "payload": {
+          "fahrenheit": false
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Temperatur Paul": {
-    "service": "TemperatureSensor",
     "name": "Temperatur Paul",
-    "topic": {
-      "statusTemperature": "knx/status/Heizen/Temperatur/Paul"
-    },
     "manufacturer": "knx2mqtt",
     "model": "TS2",
     "id": "Temperatur Paul",
-    "payload": {
-      "fahrenheit": false
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Temperatur Paul",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "knx/status/Heizen/Temperatur/Paul"
+        },
+        "payload": {
+          "fahrenheit": false
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Temperatur Schlafzimmer": {
-    "service": "TemperatureSensor",
     "name": "Temperatur Schlafzimmer",
-    "topic": {
-      "statusTemperature": "knx/status/Heizen/Temperatur/SZ"
-    },
     "manufacturer": "knx2mqtt",
     "model": "TS2",
     "id": "Temperatur Schlafzimmer",
-    "payload": {
-      "fahrenheit": false
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Temperatur Schlafzimmer",
+        "service": "TemperatureSensor",
+        "topic": {
+          "statusTemperature": "knx/status/Heizen/Temperatur/SZ"
+        },
+        "payload": {
+          "fahrenheit": false
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "WZ Steckdose Glasschrank": {
     "id": "WZ Steckdose Glasschrank",
     "name": "Glasschrank",
-    "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
     "model": "Light",
-    "topic": {
-      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Steckdose Glasschrank",
-      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Steckdose Glasschrank"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "brightnessFactor": "",
-      "hueFactor": "",
-      "saturationFactor": ""
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Glasschrank",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Steckdose Glasschrank",
+          "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Steckdose Glasschrank"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "brightnessFactor": "",
+          "hueFactor": "",
+          "saturationFactor": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "WZ Steckdose Fensterbank": {
     "id": "WZ Steckdose Fensterbank",
     "name": "Fensterbank",
-    "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
     "model": "Light",
-    "topic": {
-      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Steckdose Fensterbank",
-      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Steckdose Fensterbank"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "brightnessFactor": "",
-      "hueFactor": "",
-      "saturationFactor": ""
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Fensterbank",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Steckdose Fensterbank",
+          "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Steckdose Fensterbank"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "brightnessFactor": "",
+          "hueFactor": "",
+          "saturationFactor": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "WZ Licht Decke": {
     "id": "WZ Licht Decke",
     "name": "Wohnzimmer",
-    "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
     "model": "Light",
-    "topic": {
-      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Licht Decke",
-      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Licht Decke",
-      "setBrightness": "knx/set/Licht & Steckdosen/Wert/WZ Licht Decke",
-      "statusBrightness": "knx/status/Licht & Steckdosen/Rückmeldung Wert/WZ Licht Decke"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "brightnessFactor": "",
-      "hueFactor": "",
-      "saturationFactor": ""
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Wohnzimmer",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Licht Decke",
+          "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Licht Decke",
+          "setBrightness": "knx/set/Licht & Steckdosen/Wert/WZ Licht Decke",
+          "statusBrightness": "knx/status/Licht & Steckdosen/Rückmeldung Wert/WZ Licht Decke"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "brightnessFactor": "",
+          "hueFactor": "",
+          "saturationFactor": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "WZ Licht Esstisch": {
     "id": "WZ Licht Esstisch",
     "name": "Esstisch",
-    "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
     "model": "Light",
-    "topic": {
-      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Licht Esstisch",
-      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Licht Esstisch",
-      "setBrightness": "knx/set/Licht & Steckdosen/Wert/WZ Licht Esstisch",
-      "statusBrightness": "knx/set/Licht & Steckdosen/Rückmeldung Wert/WZ Licht Esstisch"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "brightnessFactor": "",
-      "hueFactor": "",
-      "saturationFactor": ""
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Esstisch",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Licht Esstisch",
+          "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Licht Esstisch",
+          "setBrightness": "knx/set/Licht & Steckdosen/Wert/WZ Licht Esstisch",
+          "statusBrightness": "knx/set/Licht & Steckdosen/Rückmeldung Wert/WZ Licht Esstisch"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "brightnessFactor": "",
+          "hueFactor": "",
+          "saturationFactor": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "WZ Wandlicht Spieleck": {
     "id": "WZ Wandlicht Spieleck",
     "name": "Wandlicht",
-    "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
     "model": "Light",
-    "topic": {
-      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Wandlicht Spieleck",
-      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Wandlicht Spieleck"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "brightnessFactor": "",
-      "hueFactor": "",
-      "saturationFactor": ""
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Wandlicht",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Wandlicht Spieleck",
+          "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Wandlicht Spieleck"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "brightnessFactor": "",
+          "hueFactor": "",
+          "saturationFactor": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "WZ Stehlampe": {
     "id": "WZ Stehlampe",
     "name": "Stehlampe",
-    "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
     "model": "Light",
-    "topic": {
-      "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Steckdose hinten B",
-      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Steckdose hinten B"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "brightnessFactor": "",
-      "hueFactor": "",
-      "saturationFactor": ""
-    },
-    "config": {}
+    "services": [
+      {
+        "name": "Stehlampe",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "knx/set/Licht & Steckdosen/Schalten/WZ Steckdose hinten B",
+          "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/WZ Steckdose hinten B"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "brightnessFactor": "",
+          "hueFactor": "",
+          "saturationFactor": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Thermostat Haus": {
     "id": "Thermostat Haus",
     "name": "Heizung",
-    "service": "Thermostat",
     "manufacturer": "Buderus",
     "model": "KM200",
-    "topic": {
-      "setTargetTemperature": "km200/set/heatingCircuits/hc1/temperatureLevels/day",
-      "statusTargetTemperature": "km200/status/heatingCircuits/hc1/temperatureLevels/day",
-      "statusCurrentTemperature": "km200/status/heatingCircuits/hc1/roomtemperature"
-    },
-    "payload": {},
-    "config": {}
+    "services": [
+      {
+        "name": "Heizung",
+        "service": "Thermostat",
+        "topic": {
+          "setTargetTemperature": "km200/set/heatingCircuits/hc1/temperatureLevels/day",
+          "statusTargetTemperature": "km200/status/heatingCircuits/hc1/temperatureLevels/day",
+          "statusCurrentTemperature": "km200/status/heatingCircuits/hc1/roomtemperature"
+        },
+        "payload": {},
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Treppe Licht Decke": {
     "id": "Treppe Licht Decke",
     "name": "KNX Treppe Licht Decke",
-    "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
     "model": "Light",
-    "topic": {
-      "setOn": "knx/set/Licht & Steckdosen/Schalten/Treppe Licht Decke",
-      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/Treppe Licht Decke"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "brightnessFactor": "",
-      "hueFactor": "",
-      "saturationFactor": ""
-    }
+    "services": [
+      {
+        "name": "KNX Treppe Licht Decke",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "knx/set/Licht & Steckdosen/Schalten/Treppe Licht Decke",
+          "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/Treppe Licht Decke"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "brightnessFactor": "",
+          "hueFactor": "",
+          "saturationFactor": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Treppe Licht Wand": {
     "id": "Treppe Licht Wand",
     "name": "KNX Treppe Licht Wand",
-    "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
     "model": "Light",
-    "topic": {
-      "setOn": "knx/set/Licht & Steckdosen/Schalten/Treppe Licht Wand",
-      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/Treppe Licht Wand"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "brightnessFactor": "",
-      "hueFactor": "",
-      "saturationFactor": ""
-    }
+    "services": [
+      {
+        "name": "KNX Treppe Licht Wand",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "knx/set/Licht & Steckdosen/Schalten/Treppe Licht Wand",
+          "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/Treppe Licht Wand"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "brightnessFactor": "",
+          "hueFactor": "",
+          "saturationFactor": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   },
   "Treppe Licht Schrank": {
     "id": "Treppe Licht Schrank",
     "name": "KNX Treppe Licht Schrank",
-    "service": "Lightbulb",
     "manufacturer": "knx2mqtt",
     "model": "Light",
-    "topic": {
-      "setOn": "knx/set/Licht & Steckdosen/Schalten/Treppe Licht Schrank",
-      "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/Treppe Licht Schrank"
-    },
-    "payload": {
-      "onTrue": 1,
-      "onFalse": 0,
-      "brightnessFactor": "",
-      "hueFactor": "",
-      "saturationFactor": ""
-    }
+    "services": [
+      {
+        "name": "KNX Treppe Licht Schrank",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "knx/set/Licht & Steckdosen/Schalten/Treppe Licht Schrank",
+          "statusOn": "knx/status/Licht & Steckdosen/Rückmeldung Schalten/Treppe Licht Schrank"
+        },
+        "payload": {
+          "onTrue": 1,
+          "onFalse": 0,
+          "brightnessFactor": "",
+          "hueFactor": "",
+          "saturationFactor": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
   }
 }
