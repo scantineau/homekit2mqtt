@@ -44,7 +44,7 @@ RUN mkdir -p /var/run/dbus
 COPY config.js .
 COPY index.js .
 COPY services.json .
-COPY ./accessories/ ./accessories/
+COPY ./characteristics/ ./characteristics/
 COPY ./ui/ ./ui/
 COPY run.sh .
 EXPOSE 51826
