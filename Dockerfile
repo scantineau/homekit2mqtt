@@ -45,6 +45,7 @@ COPY config.js .
 COPY index.js .
 COPY services.json .
 COPY ./characteristics/ ./characteristics/
+COPY ./services/ ./services/
 COPY ./ui/ ./ui/
 COPY run.sh .
 EXPOSE 51826
