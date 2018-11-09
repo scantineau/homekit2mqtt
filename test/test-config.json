@@ -1,0 +1,155 @@
+{
+  "123": {
+    "id": "123",
+    "name": "123",
+    "services": [
+      {
+        "name": "Hue tewst",
+        "service": "Lightbulb",
+        "topic": {
+          "setOn": "hue/set/lights/tewst",
+          "statusOn": "hue/status/lights/tewst",
+          "setBrightness": "hue/set/lights/tewst",
+          "statusBrightness": "hue/status/lights/tewst",
+          "setHue": "hue/set/lights/tewst/hue",
+          "statusHue": "hue/status/lights/tewst/hue",
+          "setSaturation": "hue/set/lights/tewst/sat",
+          "statusSaturation": "hue/status/lights/tewst/sat",
+          "setColorTemperature": "",
+          "statusColorTemperature": "",
+          "identify": "hue/status/lights/tewst/alert"
+        },
+        "payload": {
+          "onTrue": 254,
+          "onFalse": 0,
+          "brightnessFactor": 2.54,
+          "hueFactor": 181.327,
+          "saturationFactor": 2.54,
+          "identify": "select"
+        },
+        "config": {},
+        "props": {}
+      }
+    ],
+    "payload": {},
+    "config": {}
+  },
+  "test/Heizung": {
+    "id": "test/Heizung",
+    "name": "Heizung Test",
+    "services": [
+      {
+        "name": "Thermostat Test",
+        "service": "Thermostat",
+        "topic": {
+          "setTargetTemperature": "test/set/Thermostat/TargetTemperature",
+          "statusTargetTemperature": "test/status/Thermostat/TargetTemperature",
+          "statusCurrentTemperature": "test/status/Thermostat/CurrentTemperature",
+          "setTargetHeatingCoolingState": "test/set/Thermostat/TargetHeatingCoolingState",
+          "statusTargetHeatingCoolingState": "test/status/Thermostat/TargetHeatingCoolingState",
+          "statusCurrentHeatingCoolingState": "test/status/Thermostat/CurrentHeatingCoolingState",
+          "setTargetRelativeHumidity": "",
+          "statusTargetRelativeHumidity": "",
+          "statusCurrentRelativeHumidity": "test/status/Thermostat/CurrentRelativeHumidity",
+          "setCoolingThresholdTemperature": "",
+          "statusCoolingThresholdTemperature": "",
+          "setHeatingThresholdTemperature": "",
+          "statusHeatingThresholdTemperature": ""
+        },
+        "json": {
+          "statusTargetTemperature": "val",
+          "statusCurrentTemperature": "",
+          "statusTargetHeatingCoolingState": "",
+          "statusCurrentHeatingCoolingState": "",
+          "statusTargetRelativeHumidity": "",
+          "statusCurrentRelativeHumidity": "",
+          "statusCoolingThresholdTemperature": "",
+          "statusHeatingThresholdTemperature": ""
+        },
+        "payload": {},
+        "config": {
+          "TemperatureDisplayUnits": 0
+        },
+        "props": {
+          "TargetHeatingCoolingState": {
+            "validValues": [
+              0,
+              1
+            ]
+          },
+          "TargetTemperature": {
+            "minValue": 4,
+            "maxValue": 30
+          }
+        }
+      },
+      {
+        "name": "Thermostat Test Battery",
+        "service": "BatteryService",
+        "topic": {
+          "statusBatteryLevel": "test/status/Thermostat/BatteryLevel",
+          "statusChargingState": "test/status/Thermostat/ChargingState",
+          "statusLowBattery": "test/status/Thermostat/LowBattery"
+        }
+      }
+    ],
+    "payload": {},
+    "config": {}
+  },
+  "hm//Fenster Hobbyraum": {
+    "name": "Contact Sensor1",
+    "manufacturer": "test manuf",
+    "model": "test model",
+    "services": [
+      {
+        "name": "Contact Sensor2",
+        "service": "ContactSensor",
+        "topic": {
+          "statusContactSensorState": "test/status/ContactSensor",
+          "statusLowBattery": "test/status/ContactSensor/LowBattery",
+          "identify": "",
+          "statusTampered": "",
+          "statusActive": "",
+          "statusFault": ""
+        },
+        "payload": {
+          "onContactDetected": 0,
+          "onLowBattery": 1,
+          "identify": ""
+        },
+        "config": {},
+        "props": {}
+      }
+    ],
+    "topicIdentify": "test/set/ContactSensor/identify",
+    "id": "hm//Fenster Hobbyraum",
+    "payload": {},
+    "config": {},
+    "serial": ""
+  },
+  "Switch": {
+    "id": "Switch",
+    "name": "Switch",
+    "category": 8,
+    "payloadIdentify": "",
+    "services": [
+      {
+        "name": "Switch",
+        "service": "Switch",
+        "topic": {
+          "setOn": "test/switch/set",
+          "statusOn": "test/switch/status"
+        },
+        "json": {
+          "statusOn": "on"
+        },
+        "payload": {
+          "onFalse": false,
+          "onTrue": true
+        },
+        "config": {},
+        "props": {}
+      }
+    ]
+  }
+}

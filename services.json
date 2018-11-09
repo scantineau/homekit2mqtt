@@ -1,38 +1,143 @@
 {
+  "AirPurifier": {
+    "topic": [
+      {"name": "statusActive"},
+      {"name": "setActive"},
+      {"name": "statusCurrentAirPurifierState", "desc": "0 = INACTIVE, 1 = IDLE, 2 = PURIFYING_AIR"},
+      {"name": "statusTargetAirPurifierState", "desc": "0 = MANUAL, 1 = AUTO"},
+      {"name": "setTargetAirPurifierState", "desc": "0 = MANUAL, 1 = AUTO"},
+      {"name": "statusLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "setLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "statusSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "setLockSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "statusRotationSpeed", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "setRotationSpeed", "optional": true, "desc": "Percentage 0-100"}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1}
+    ]
+  },
+  "AirQualitySensor": {
+    "topic": [
+      {"name": "statusAirQuality", "desc": "0 = UNKNOWN, 1 = EXCELLENT, 2 = GOOD, 3 = FAIR, 4 = INFERIOR, 5 = POOR"},
+      {"name": "statusOzoneDensity", "type": "Number", "optional": true},
+      {"name": "statusNitrogenDioxideDensity", "type": "Number", "optional": true},
+      {"name": "statusSulphurDioxideDensity", "type": "Number", "optional": true},
+      {"name": "statusPM2_5Density", "type": "Number", "optional": true},
+      {"name": "statusPM10Density", "type": "Number", "optional": true},
+      {"name": "statusVOCDensity", "type": "Number", "optional": true},
+      {"name": "statusCarbonMonoxideLevel", "type": "Number", "optional": true},
+      {"name": "statusCarbonDioxideLevel", "type": "Number", "optional": true},
+      {"name": "onLowBattery", "optional": true},
+      {"name": "onTampered", "optional": true},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true}
+    ],
+    "payload": [
+      {"name": "onLowBattery", "optional": true},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
+    ]
+  },
+   "BatteryService": {
+    "topic": [
+      {"name": "statusBatteryLevel", "desc": "Percentage 0-100"},
+      {"name": "statusChargingState", "desc": "0 = NOT_CHARGING, 1 = CHARGING, 2 = NOT_CHARGEABLE"},
+      {"name": "statusLowBattery", "desc": "0 = BATTERY_LEVEL_NORMAL, 1 = BATTERY_LEVEL_LOW"}
+    ],
+    "payload": [
+      {"name": "onLowBattery"},
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "minBatteryLevel", "type": "Number", "optional": true, "default": 0},
+      {"name": "maxBatteryLevel", "type": "Number", "optional": true, "default": 100}
+    ]
+  },
+  "CameraRTSPStreamManagement": {
+    "topic": [],
+    "payload": [],
+    "config": [
+      {"name": "source", "optional": false, "type": "String", "default": "-re -i rtsp://myfancy_rtsp_stream"},
+      {"name": "stillImageSource", "optional": false, "type": "String", "default": "-i http://faster_still_image_grab_url/this_is_optional.jpg"},
+      {"name": "maxStreams", "optional": false, "type": "Number", "default": "2", "desc": "the maximum number of streams that will be generated for this camera"},
+      {"name": "maxWidth", "optional": false, "type": "Number", "default": "1280"},
+      {"name": "maxHeight", "optional": false, "type": "Number", "default": "720"},
+      {"name": "maxFPS", "optional": false, "type": "Number", "default": "10", "desc": "the maximum frame rate of the stream"},
+      {"name": "maxBitrate", "optional": false, "type": "Number", "default": "300", "desc": "the maximum bit rate of the stream in kbit/s"},
+      {"name": "vcodec", "optional": false, "type": "String", "default": "libx264", "desc": "If you're running on a RPi with the omx version of ffmpeg installed, you can change to \"h264_omx\" for hardware accelerated video codec"},
+      {"name": "audio", "optional": false, "type": "Boolean", "default": false, "desc": "can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, see https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki"},
+      {"name": "packetSize", "optional": false, "type": "Number", "default": "1316", "desc": "If audio or video is choppy try a smaller value, set to a multiple of 188"},
+      {"name": "debug", "optional": false, "type": "Boolean", "default": false, "desc": "Show the output of ffmpeg in the log"},
+      {"name": "videoProcessor", "optional": false, "type": "String", "default": "ffmpeg"}
+    ]
+  },
   "CarbonDioxideSensor": {
     "topic": [
       {"name": "statusCarbonDioxideDetected"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusCarbonDioxideLevel", "optional": true},
+      {"name": "statusCarbonDioxidePeakLevel", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onCarbonDioxideDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "CarbonMonoxideSensor": {
     "topic": [
       {"name": "statusCarbonMonoxideDetected"},
+      {"name": "statusCarbonMonoxideLevel", "optional": true},
+      {"name": "statusCarbonMonoxidePeakLevel", "optional": true},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onCarbonMonoxideDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "ContactSensor": {
     "topic": [
       {"name": "statusContactSensorState"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onContactDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "Door": {
@@ -42,7 +147,7 @@
       {"name": "statusCurrentPosition", "optional": true},
       {"name": "statusPositionState", "optional": true},
       {"name": "statusObstruction", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "setHoldPosition", "optional": true}
     ],
     "payload": [
       {"name": "targetPositionFactor", "type": "Number", "optional": true},
@@ -50,16 +155,17 @@
       {"name": "positionStatusDecreasing", "optional": true},
       {"name": "positionStatusIncreasing", "optional": true},
       {"name": "onObstructionDetected", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "holdPositionTrue", "optional": true, "default": true},
+      {"name": "holdPositionFalse", "optional": true, "default": false}
+
     ]
   },
   "Doorbell": {
     "topic": [
-      {"name": "statusEvent"},
-      {"name": "identify", "optional": true}
+      {"name": "statusEvent"}
     ],
     "payload": [
-      {"name": "identify", "optional": true}
+
     ]
   },
   "Fan": {
@@ -69,60 +175,189 @@
       {"name": "setRotationDirection", "optional": true},
       {"name": "statusRotationDirection", "optional": true},
       {"name": "setRotationSpeed", "optional": true},
-      {"name": "statusRotationSpeed", "optional": true},
-      {"name": "identify", "optional": true, "optional": true}
+      {"name": "statusRotationSpeed", "optional": true}
     ],
     "payload": [
       {"name": "onTrue", "optional": true, "default": true},
       {"name": "onFalse", "optional": true, "default": false},
       {"name": "rotationDirectionCounterClockwise", "optional": true, "default": 1},
       {"name": "rotationDirectionClockwise", "optional": true, "default": 0},
-      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1},
-      {"name": "identify", "optional": true, "optional": true}
+      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1}
     ]
+  },
+  "Fanv2": {
+    "topic": [
+      {"name": "statusActive"},
+      {"name": "setActive"},
+      {"name": "statusCurrentFanState", "desc": "0 = INACTIVE, 1 = IDLE, 2 = PURIFYING_AIR"},
+      {"name": "statusTargetFanState", "desc": "0 = MANUAL, 1 = AUTO"},
+      {"name": "setTargetFanState", "desc": "0 = MANUAL, 1 = AUTO"},
+      {"name": "statusLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "setLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "statusSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "setLockSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "statusRotationSpeed", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "setRotationSpeed", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "statusRotationDirection", "optional": true, "desc": "0 = CLOCKWISE, 1 = COUNTER_CLOCKWISE"},
+      {"name": "setRotationDirection", "optional": true, "desc": "0 = CLOCKWISE, 1 = COUNTER_CLOCKWISE"}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1}
+    ]
+  },
+  "Faucet": {
+    "topic": [
+      {"name": "setActive"},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "faultTrue", "optional": true, "default": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
+    ]
+  },
+  "FilterMaintenance": {
+    "topic": [
+      {"name": "statusFilterChangeIndication"},
+      {"name": "statusFilterLifeLevel", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "setResetFilterIndication", "optional": true}
+    ],
+    "payload": []
   },
   "GarageDoorOpener": {
     "topic": [
       {"name": "setDoor"},
-      {"name": "statusDoor", "optional": true},
+      {"name": "statusDoor", "optional": true, "desc": "0 = OPEN, 1 = CLOSED; 2 = OPENING, 3 = CLOSING, 4 = STOPPED"},
       {"name": "statusObstruction", "optional": true},
       {"name": "setLock", "optional": true},
-      {"name": "statusLock", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLock", "optional": true}
     ],
     "payload": [
-      {"name": "doorOpen"},
-      {"name": "doorClosed"},
+      {"name": "doorClosed", "optional": true},
       {"name": "doorOpening", "optional": true},
       {"name": "doorClosing", "optional": true},
       {"name": "doorStopped", "optional": true},
       {"name": "onObstructionDetected", "optional": true},
       {"name": "lockUnsecured", "optional": true},
-      {"name": "lockSecured", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "lockSecured", "optional": true}
+    ]
+  },
+  "HeaterCooler": {
+    "topic": [
+      {"name": "statusActive"},
+      {"name": "setActive"},
+      {"name": "statusCurrentTemperature"},
+      {"name": "statusCurrentHeaterCoolerState", "desc": "0 = INACTIVE, 1 = IDLE, 2 = HEATING, 3 = COOLING"},
+      {"name": "statusTargetHeaterCoolerState", "desc": "0 = AUTO, 1 = HEAT, 2 = COOL"},
+      {"name": "setTargetHeaterCoolerState", "desc": "0 = AUTO, 1 = HEAT, 2 = COOL"},
+      {"name": "statusLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "setLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "statusSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "setLockSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "statusRotationSpeed", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "setRotationSpeed", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "statusCoolingThresholdTemperature", "optional": true},
+      {"name": "setCoolingThresholdTemperature", "optional": true},
+      {"name": "statusHeatingThresholdTemperature", "optional": true},
+      {"name": "setHeatingThresholdTemperature", "optional": true}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1}
+    ],
+    "config": [
+      {"name": "TemperatureDisplayUnits", "enum": ["CELSIUS", "FAHRENHEIT"]}
+    ],
+    "props": [
+      {"name": "CurrentTemperature", "minValue": 0, "maxValue": 100}
+    ]
+  },
+  "HumidifierDehumidifier": {
+    "topic": [
+      {"name": "statusActive"},
+      {"name": "setActive"},
+      {"name": "statusCurrentTemperature"},
+      {"name": "statusWaterLevel", "desc": "Percentage 0-100"},
+      {"name": "statusCurrentHumidifierDehumidifierState", "desc": "0 = INACTIVE, 1 = IDLE, 2 = HUMIDIFYING, 3 = DEHUMIDIFYING"},
+      {"name": "statusTargetHumidifierDehumidifierState", "desc": "0 = HUMIDIFIER_OR_DEHUMIDIFIER, 1 = HUMIDIFIER, 2 = DEHUMIDIFIER"},
+      {"name": "setTargetHumidifierDehumidifierState", "desc": "0 = HUMIDIFIER_OR_DEHUMIDIFIER, 1 = HUMIDIFIER, 2 = DEHUMIDIFIER"},
+      {"name": "statusLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "setLockPhysicalControls", "optional": true, "desc": "0 = CONTROL_LOCK_DISABLED, 1 = CONTROL_LOCK_ENABLED"},
+      {"name": "statusSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "setLockSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "statusRotationSpeed", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "setRotationSpeed", "optional": true, "desc": "Percentage 0-100"},
+      {"name": "statusRelativeHumidityDehumidifierThreshold", "optional": true},
+      {"name": "setRelativeHumidityDehumidifierThreshold", "optional": true},
+      {"name": "statusRelativeHumidityHumidifierThreshold", "optional": true},
+      {"name": "setRelativeHumidityHumidifierThreshold", "optional": true}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "rotationSpeedFactor", "type": "Number", "optional": true, "default": 1},
+      {"name": "waterLevelFactor", "type": "Number", "optional": true, "default": 1}
     ]
   },
   "HumiditySensor": {
     "topic": [
       {"name": "statusHumidity"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
+    ]
+  },
+  "IrrigationSystem": {
+    "topic": [
+      {"name": "setActive"},
+      {"name": "statusActive"},
+      {"name": "statusFault", "optional": true},
+      {"name": "statusInUse"},
+      {"name": "statusRemainingDuration"},
+      {"name": "statusProgramMode"}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "faultTrue", "optional": true, "default": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "inUseTrue", "optional": true, "default": true}
     ]
   },
   "LeakSensor": {
     "topic": [
       {"name": "statusLeakDetected"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onLeakDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "Lightbulb": {
@@ -137,38 +372,70 @@
       {"name": "statusSaturation", "optional": true},
       {"name": "setColorTemperature", "optional": true},
       {"name": "statusColorTemperature", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusRGB", "optional": true},
+      {"name": "setRGB", "optional": true}
     ],
     "payload": [
       {"name": "onTrue"},
       {"name": "onFalse"},
       {"name": "brightnessFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "hueFactor", "type": "Number", "optional": true, "default": 1},
-      {"name": "saturationFactor", "type": "Number", "optional": true, "default": 1},
-      {"name": "identify", "optional": true}
+      {"name": "saturationFactor", "type": "Number", "optional": true, "default": 1}
     ]
   },
   "LightSensor": {
     "topic": [
-      {"name": "statusAmbientLightLevel"},
+      {"name": "statusAmbientLightLevel", "desc": "0.0001 - 100000"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "ambientLightLevelFactor", "optional": true, "default": 1},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
+    ]
+  },
+  "LockManagement": {
+    "topic": [
+      {"name": "setLockControlPoint"},
+      {"name": "statusVersion"},
+      {"name": "statusVersion", "optional": true},
+      {"name": "statusLogs", "optional": true},
+      {"name": "setAudioFeedback", "optional": true},
+      {"name": "statusAudioFeedback", "optional": true},
+      {"name": "setLockManagementAutoSecurityTimeout", "optional": true, "desc": "Seconds"},
+      {"name": "statusLockManagementAutoSecurityTimeout", "optional": true, "desc": "Seconds"},
+      {"name": "setAdministratorOnlyAccess", "optional": true},
+      {"name": "statusAdministratorOnlyAccess", "optional": true},
+      {"name": "statusLockLastKnownAction", "optional": true, "desc": "0 = SECURED_PHYSICALLY_INTERIOR, 1 = UNSECURED_PHYSICALLY_INTERIOR, 2 = SECURED_PHYSICALLY_EXTERIOR, 3 = UNSECURED_PHYSICALLY_EXTERIOR, 4 = SECURED_BY_KEYPAD, 5 = UNSECURED_BY_KEYPAD, 6 = SECURED_REMOTELY, 7 = UNSECURED_REMOTELY, 8 = SECURED_BY_AUTO_SECURE_TIMEOUT"},
+      {"name": "statusCurrentDoorState", "optional": true, "desc": "0 = OPEN, 1 = CLOSED; 2 = OPENING, 3 = CLOSING, 4 = STOPPED"},
+      {"name": "statusMotionDetected", "optional": true}
+    ],
+    "payload": [
+      {"name": "doorClosed", "optional": true},
+      {"name": "doorOpening", "optional": true},
+      {"name": "doorClosing", "optional": true},
+      {"name": "doorStopped", "optional": true}
     ]
   },
   "LockMechanism": {
     "topic": [
       {"name": "setLock"},
-      {"name": "statusLock", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLock", "optional": true}
     ],
     "payload": [
       {"name": "lockSecured"},
-      {"name": "identify", "optional": true}
+      {"name": "lockUnsecured"},
+      {"name": "lockJammed", "optional": true},
+      {"name": "lockUnknown", "optional": true}
     ]
   },
   "Microphone": {
@@ -176,74 +443,106 @@
       {"name": "setMute"},
       {"name": "statusMute", "optional": true},
       {"name": "setVolume", "optional": true},
-      {"name": "statusVolume", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusVolume", "optional": true}
     ],
     "payload": [
       {"name": "muteTrue"},
       {"name": "muteFalse"},
-      {"name": "volumeFactor", "type": "Number", "optional": true, "default": 1},
-      {"name": "identify", "optional": true, "optional": true}
+      {"name": "volumeFactor", "type": "Number", "optional": true, "default": 1}
     ]
   },
   "MotionSensor": {
     "topic": [
       {"name": "statusMotionDetected"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onMotionDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "OccupancySensor": {
     "topic": [
       {"name": "statusOccupancyDetected"},
-      {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusLowBattery", "optional": true}
     ],
     "payload": [
       {"name": "onOccupancyDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "Outlet": {
     "topic": [
       {"name": "setOn"},
       {"name": "statusOn", "optional": true},
-      {"name": "statusOutletInUse"},
-      {"name": "identify", "optional": true}
+      {"name": "statusOutletInUse"}
     ],
     "payload": [
       {"name": "onFalse"},
       {"name": "onTrue"},
-      {"name": "onOutletInUse"},
-      {"name": "identify", "optional": true}
+      {"name": "onOutletInUse"}
     ]
   },
   "SecuritySystem": {
     "topic": [
-      {"name": "setSecuritySystemTargetState"},
-      {"name": "statusSecuritySystemCurrentState", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "setSecuritySystemTargetState", "desc": "0 = STAY_ARM, 1 = AWAY_ARM, 2 = NIGHT_ARM, 3 = DISARM"},
+      {"name": "statusSecuritySystemCurrentState", "optional": true, "desc": "0 = STAY_ARM, 1 = AWAY_ARM, 2 = NIGHT_ARM, 3 = DISARMED, 4 = ALARM_TRIGGERED"},
+      {"name": "statusSecuritySystemAlarmType", "optional": true},
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
-      {"name": "identify", "optional": true}
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
+    ]
+  },
+  "Slat": {
+    "topic": [
+      {"name": "statusCurrentSlatState", "desc": "0 = FIXED, 1 = JAMMED, 2 = SWINGING"},
+      {"name": "statusCurrentTiltAngle", "optional": true},
+      {"name": "statusTargetTiltAngle", "optional": true},
+      {"name": "setTargetTiltAngle", "optional": true},
+      {"name": "statusSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"},
+      {"name": "setSwingMode", "optional": true, "desc": "0 = SWING_DISABLED, 1 = SWING_ENABLED"}
+    ],
+    "payload": [],
+    "config": [
+      {"name": "SlatType", "enum": ["HORIZONTAL", "VERTICAL"]}
     ]
   },
   "SmokeSensor": {
     "topic": [
       {"name": "statusSmokeDetected"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {"name": "onSmokeDetected"},
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
     ]
   },
   "Speaker": {
@@ -251,42 +550,39 @@
       {"name": "setMute"},
       {"name": "statusMute", "optional": true},
       {"name": "setVolume", "optional": true},
-      {"name": "statusVolume", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusVolume", "optional": true}
     ],
     "payload": [
       {"name": "muteTrue"},
       {"name": "muteFalse"},
-      {"name": "volumeFactor", "type": "Number", "default": 1},
-      {"name": "identify", "optional": true}
+      {"name": "volumeFactor", "type": "Number", "default": 1}
     ]
   },
   "StatelessProgrammableSwitch": {
     "topic": [
-      {"name": "statusEvent"},
-      {"name": "identify", "optional": true}
+      {"name": "statusEvent", "desc": "0 = SINGLE_PRESS, 1 = DOUBLE_PRESS, 2 = LONG_PRESS"}
     ],
     "payload": [
-      {"name": "identify", "optional": true}
+      
     ]
   },
   "Switch": {
     "topic": [
       {"name": "setOn"},
-      {"name": "statusOn", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusOn", "optional": true}
     ],
     "payload": [
       {"name": "onFalse"},
-      {"name": "onTrue"},
-      {"name": "identify", "optional": true}
+      {"name": "onTrue"}
     ]
   },
   "TemperatureSensor": {
     "topic": [
       {"name": "statusTemperature"},
       {"name": "statusLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusTampered", "optional": true},
+      {"name": "statusActive", "optional": true},
+      {"name": "statusFault", "optional": true}
     ],
     "payload": [
       {
@@ -296,7 +592,17 @@
         "default": false
       },
       {"name": "onLowBattery", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "invertLowBattery", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onTampered", "optional": true},
+      {"name": "invertTampered", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onActive", "optional": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "onFault", "optional": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"}
+
+    ],
+    "props": [
+      {"name": "CurrentTemperature", "minValue": -100, "maxValue": 100}
     ]
   },
   "Thermostat": {
@@ -313,11 +619,37 @@
       {"name": "setCoolingThresholdTemperature", "optional": true},
       {"name": "statusCoolingThresholdTemperature", "optional": true},
       {"name": "setHeatingThresholdTemperature", "optional": true},
-      {"name": "statusHeatingThresholdTemperature", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusHeatingThresholdTemperature", "optional": true}
     ],
     "payload": [
-      {"name": "identify", "optional": true}
+      
+    ],
+    "config": [
+      {"name": "TemperatureDisplayUnits", "enum": ["CELSIUS", "FAHRENHEIT"]}
+    ],
+    "props": [
+      {"name": "TargetHeatingCoolingState", "validValues": ["OFF", "HEAT", "COOL", "AUTO"]},
+      {"name": "TargetTemperature", "minValue": 4, "maxValue": 38}
+    ]
+  },
+  "Valve": {
+    "topic": [
+      {"name": "setActive"},
+      {"name": "statusActive"},
+      {"name": "statusFault", "optional": true},
+      {"name": "statusInUse"},
+      {"name": "statusRemainingDuration", "optional": true},
+      {"name": "setDuration", "optional": true}
+    ],
+    "payload": [
+      {"name": "activeTrue", "optional": true, "default": true},
+      {"name": "invertActive", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "faultTrue", "optional": true, "default": true},
+      {"name": "invertFault", "optional": true, "default": false, "type": "Boolean"},
+      {"name": "inUseTrue", "optional": true, "default": true}
+    ],
+    "config": [
+      {"name": "ValveType", "optional": true, "default": "0", "enum": ["GENERIC_VALVE", "IRRIGATION", "SHOWER_HEAD", "WATER_FAUCET"]}
     ]
   },
   "Window": {
@@ -326,16 +658,14 @@
       {"name": "statusTargetPosition", "optional": true},
       {"name": "statusCurrentPosition", "optional": true},
       {"name": "statusPositionState", "optional": true},
-      {"name": "statusObstruction", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusObstruction", "optional": true}
     ],
     "payload": [
       {"name": "targetPositionFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "currentPositionFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "positionStatusDecreasing", "optional": true},
       {"name": "positionStatusIncreasing", "optional": true},
-      {"name": "onObstructionDetected", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "onObstructionDetected", "optional": true}
     ]
   },
   "WindowCovering": {
@@ -344,14 +674,18 @@
       {"name": "statusTargetPosition", "optional": true},
       {"name": "statusCurrentPosition", "optional": true},
       {"name": "statusPositionState", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "statusTargetHorizontalTiltAngle", "optional": true},
+      {"name": "setTargetHorizontalTiltAngle", "optional": true},
+      {"name": "statusTargetVerticalTiltAngle", "optional": true},
+      {"name": "setTargetVerticalTiltAngle", "optional": true},
+      {"name": "statusCurrentHorizontalTiltAngle", "optional": true},
+      {"name": "statusCurrentVerticalTiltAngle", "optional": true}
     ],
     "payload": [
       {"name": "targetPositionFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "currentPositionFactor", "type": "Number", "optional": true, "default": 1},
       {"name": "positionStatusDecreasing", "optional": true},
-      {"name": "positionStatusIncreasing", "optional": true},
-      {"name": "identify", "optional": true}
+      {"name": "positionStatusIncreasing", "optional": true}
     ]
   }
 }

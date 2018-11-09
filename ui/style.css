@@ -31,17 +31,32 @@ span.fa {
 }
 
 .input-group .payload-type {
+    width: 120px;
     z-index: 10000;
 }
 
-.input-group .payload {
-    margin-left: -4px;
-    width: calc(100% + 4px);
+input.payload, input.payloadIdentify {
+    margin-left: 16px !important;
     border-top-right-radius: 4px !important;
     border-bottom-right-radius: 4px !important;
 
 }
 
+select.payload, select.payloadIdentify {
+    margin-left: 16px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+}
+
+
+@media (min-width: 1096px) {
+    .modal-lg {
+        max-width: 1024px;
+    }
+}
 .modal-body h4 {
         padding-top: 12px;
         border-top: 1px solid #ddd;
@@ -54,4 +69,40 @@ span.fa {
 
 .typeahead {
     z-index: 100000;
+}
+
+
+.col-form-label {
+    font-size: 0.90em !important;
+}
+
+.form-check-inline {
+    margin-top: 6px;
+}
+
+.subgrid-data .ui-jqgrid-bootstrap.ui-jqgrid {
+    border: 0;
+    border-radius: 0;
+}
+
+input[type=checkbox] {
+    margin-top: 0.5em;
+}
+
+.row-prop {
+    padding-top: 3px;
+    font-size: 11px;
+    color: #555;
+}
+
+.attr-name {
+    word-wrap: break-word;
+}
+
+a.fa-info-circle {
+    font-size: 1.5em;
+}
+
+a.fa-info-circle:hover {
+    text-decoration: none;
 }

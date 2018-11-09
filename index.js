@@ -2,7 +2,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 const Mqtt = require('mqtt');
+const chalk = require('chalk');
+const qrcode = require('qrcode-terminal');
+const nextport = require('nextport');
+const oe = require('obj-ease');
 const express = require('express');
 const bodyParser = require('body-parser');
 const basicAuth = require('express-basic-auth');
@@ -11,29 +16,42 @@ const app = express();
 
 const log = require('yalm');
 const HAP = require('hap-nodejs');
-const pkgHap = require('./node_modules/hap-nodejs/package.json');
+const pkgHap = require('hap-nodejs/package.json');
 const pkg = require('./package.json');
 const config = require('./config.js');
 
 log.setLevel(config.verbosity);
 
 log(pkg.name + ' ' + pkg.version + ' starting');
+process.title = pkg.name;
 
-const mqttStatus = {};        // Holds the payloads of the last-received message, keys are the topics.
-const mqttCallbacks = {};     // Holds arrays of subscription callbacks, keys are the topics.
+const mqttStatusRaw = {}; // Holds the payloads of the last-received message, keys are the topics.
+
+function mqttStatus(topic, attr) { // Holds the payloads of the last-received message, keys are the topics.
+    if (attr && typeof mqttStatusRaw[topic] === 'object') {
+        return oe.getProp(mqttStatusRaw[topic], attr);
+    }
+    return mqttStatus[topic];
+}
+
+const mqttCallbacks = {}; // Holds arrays of subscription callbacks, keys are the topics.
 let mqttConnected;
 
 let bridgeListening;
+const topics = [];
 
 log.info('mqtt trying to connect', config.url);
-const mqtt = Mqtt.connect(config.url, {will: {topic: config.name + '/connected', payload: '0', retain: true}});
+const mqtt = Mqtt.connect(config.url, {
+    will: {topic: config.name + '/connected', payload: '0', retain: true},
+    rejectUnauthorized: !config.insecure
+});
 
 mqtt.on('connect', () => {
     mqttConnected = true;
     log.info('mqtt connected ' + config.url);
-    /* istanbul ignore if */
+    /* istanbul ignore next */
     if (!bridgeListening) {
-        mqtt.publish(config.name + '/connected', '1', {retain: true});
+        mqttPub(config.name + '/connected', '1', {retain: true});
     }
 });
 
@@ -60,51 +78,47 @@ mqtt.on('error', err => {
     log.error('mqtt error ' + err);
 });
 
-mqtt.on('message', (topic, payload) => {
-    payload = payload.toString();
+function typeGuess(payload) {
     let state;
-    try {
-        // Todo - check for json objects in a less nasty way ;)
-        if (payload.indexOf('{') === -1) {
-            throw new Error('not an object');
-        } // We have no use for arrays here.
-        // We got an Object - let's hope it follows mqtt-smarthome architecture and has an attribute "val"
-        // see https://github.com/mqtt-smarthome/mqtt-smarthome/blob/master/Architecture.md
-        state = JSON.parse(payload).val;
-    } catch (err) {
-        // Nasty type guessing.
-        // Do we really need to cast the strings "true" and "false" to bool?
-        if (payload === 'true') {
-            state = true;
-        } else if (payload === 'false') {
-            state = false;
-        } else if (isNaN(payload)) {
-            state = payload;
-        } else {
-            state = parseFloat(payload);
-        }
+    // Nasty type guessing.
+    // TODO clarify Do we really want/need to cast the strings "true" and "false" to bool? https://github.com/hobbyquaker/homekit2mqtt/issues/66
+    if (payload === 'true') {
+        state = true;
+    } else if (payload === 'false') {
+        state = false;
+    } else if (isNaN(payload)) {
+        state = payload;
+    } else {
+        state = parseFloat(payload);
     }
-    log.debug('< mqtt', topic, state);
-    mqttStatus[topic] = state;
-    /* istanbul ignore else */
-    if (mqttCallbacks[topic]) {
-        mqttCallbacks[topic].forEach(cb => {
-            cb(state);
-        });
-    }
-});
+    return state;
+}
 
 // MQTT subscribe function that provides a callback on incoming messages.
 // Not meant to be used with wildcards!
-function mqttSub(topic, callback) {
+function mqttSub(topic, /* string, optional, default "val" */ attr, callback) {
     topic = String(topic);
+    /* istanbul ignore next */
+    if (topic === '') {
+        log.error('trying to subscribe empty topic');
+        return;
+    }
+    /* istanbul ignore if */
+    if (typeof attr === 'function') {
+        callback = attr;
+        attr = 'val';
+    } else if (attr) {
+        attr = String(attr);
+    } else {
+        attr = 'val';
+    }
     /* istanbul ignore else */
     if (typeof callback === 'function') {
         /* istanbul ignore if */
         if (mqttCallbacks[topic]) {
-            mqttCallbacks[topic].push(callback);
+            mqttCallbacks[topic].push({attr, callback});
         } else {
-            mqttCallbacks[topic] = [callback];
+            mqttCallbacks[topic] = [{attr, callback}];
             log.debug('mqtt subscribe', topic);
             mqtt.subscribe(topic);
         }
@@ -123,8 +137,20 @@ function mqttPub(topic, payload, options) {
         /* istanbul ignore if */
         if (typeof payload === 'object') {
             payload = JSON.stringify(payload);
+        /* istanbul ignore next */
+        } else if (typeof payload === 'undefined') {
+            payload = '';
         } else if (typeof payload !== 'string') {
             payload = String(payload);
+        }
+        log.debug('> mqtt', topic, payload);
+
+        /* istanbul ignore if */
+        if (config.retain) {
+            if (!options) {
+                options = {};
+            }
+            options.retain = true;
         }
         mqtt.publish(topic, payload, options, err => {
             /* istanbul ignore next */
@@ -137,11 +163,7 @@ function mqttPub(topic, payload, options) {
 
 log.info('using hap-nodejs version', pkgHap.version);
 
-const uuid = HAP.uuid;
-const Bridge = HAP.Bridge;
-const Accessory = HAP.Accessory;
-const Service = HAP.Service;
-const Characteristic = HAP.Characteristic;
+const {uuid, Bridge, Accessory, Service, Characteristic} = HAP;
 
 /* istanbul ignore next */
 if (config.storagedir) {
@@ -165,15 +187,27 @@ bridge.on('identify', (paired, callback) => {
 /* istanbul ignore next */
 function identify(settings, paired, callback) {
     log.debug('< hap identify', settings.name, paired ? '(paired)' : '(unpaired)');
-    if (settings.topic.identify) {
-        log.debug('> mqtt', settings.topic.identify, settings.payload.identify);
-        mqttPub(settings.topic.identify, settings.payload.identify);
+    if (settings.topicIdentify) {
+        log.debug('> mqtt', settings.topicIdentify, settings.payloadIdentify);
+        mqttPub(settings.topicIdentify, settings.payloadIdentify);
     }
     callback();
 }
 
+function mac(data) {
+    const sha1sum = crypto.createHash('sha1');
+    sha1sum.update(data);
+    const s = sha1sum.digest('hex');
+    let i = -1;
+    return 'xx:xx:xx:xx:xx:xx'.replace(/[x]/g, () => {
+        i += 1;
+        return s[i];
+    }).toUpperCase();
+}
+
 function newAccessory(settings) {
-    const acc = new Accessory(settings.name, uuid.generate(settings.id));
+    log.debug('creating new accessory', '"' + settings.name + '"', '"' + settings.id + '"', uuid.generate(settings.id));
+    const acc = new Accessory(settings.name, uuid.generate(settings.id), settings.category);
     if (settings.manufacturer || settings.model || settings.serial) {
         acc.getService(Service.AccessoryInformation)
             .setCharacteristic(Characteristic.Manufacturer, settings.manufacturer || '-')
@@ -193,73 +227,248 @@ function newAccessory(settings) {
     return acc;
 }
 
-const createAccessory = {};
+const addService = {};
 
-function loadAccessory(acc) {
-    const file = 'accessories/' + acc + '.js';
+function loadService(service) {
+    const file = 'services/' + service + '.js';
     log.debug('loading', file);
-    createAccessory[acc] = require(path.join(__dirname, file))({mqttPub, mqttSub, mqttStatus, log, newAccessory, Service, Characteristic});
+    addService[service] = require(path.join(__dirname, file))({mqttPub, mqttSub, mqttStatus, log, Service, Characteristic, HAP});
 }
 
-// Load and create all accessories
-log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
-let mapping = require(config.mapfile);
-let accCount = 0;
-Object.keys(mapping).forEach(id => {
-    const a = mapping[id];
-    a.id = id;
-    if (!createAccessory[a.service]) {
-        loadAccessory(a.service);
+let mapping;
+let accCount;
+
+/* Convert old config file schema to keep compatiblity */
+/* istanbul ignore next */
+function convertMapping() {
+    let isConverted;
+    Object.keys(mapping).forEach(id => {
+        const accConfig = mapping[id];
+
+        if (!accConfig.services) {
+            accConfig.services = [];
+            isConverted = true;
+        }
+
+        if (accConfig.topic && accConfig.topic.identify) {
+            accConfig.topicIdentify = accConfig.topic.identify;
+            delete accConfig.topic.identify;
+            isConverted = true;
+        }
+
+        if (accConfig.payload && accConfig.payload.identify) {
+            accConfig.payloadIdentify = accConfig.payload.identify;
+            delete accConfig.payload.identify;
+            isConverted = true;
+        }
+
+        if (accConfig.service) {
+            accConfig.services.unshift({
+                name: accConfig.name,
+                service: accConfig.service,
+                topic: accConfig.topic || {},
+                payload: accConfig.payload || {},
+                config: accConfig.config || {},
+                props: accConfig.props || {}
+            });
+            delete accConfig.service;
+            delete accConfig.topic;
+            delete accConfig.payload;
+            delete accConfig.config;
+            delete accConfig.props;
+            isConverted = true;
+        }
+    });
+    if (isConverted) {
+        log.info('mapping file converted');
+        saveMapping();
     }
-    log.debug('addBridgedAccessory ' + a.service + ' ' + a.name);
-    bridge.addBridgedAccessory(createAccessory[a.service](a));
-    accCount++;
-});
-log.info('hap created', accCount, 'Accessories');
+}
 
-log('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port, 'pincode=' + config.c);
-bridge.publish({
-    username: config.username,
-    port: config.port,
-    pincode: config.c,
-    category: Accessory.Categories.OTHER
-});
+function createBridge() {
+    mqtt.on('message', (topic, payload) => {
+        payload = payload.toString();
+        let json;
+        if (payload.indexOf('{') !== -1 && !config.disableJsonParse) {
+            try {
+                json = JSON.parse(payload);
+            } catch (err) {}
+        }
+        const state = typeGuess(payload);
+        log.debug('< mqtt', topic, state, payload);
 
-bridge._server.on('listening', () => {
-    bridgeListening = true;
-    mqtt.publish(config.name + '/connected', '2', {retain: true});
-    log('hap Bridge listening on port', config.port);
-});
+        mqttStatusRaw[topic] = json || state;
+        mqttStatus[topic] = (json && typeof json.val !== 'undefined') ? json.val : state;
 
-bridge._server.on('pair', username => {
-    log('hap paired', username);
-});
+        /* istanbul ignore else */
+        if (mqttCallbacks[topic]) {
+            mqttCallbacks[topic].forEach(obj => {
+                const {attr, callback} = obj;
+                /* istanbul ignore else */
+                if (typeof callback === 'function') {
+                    /* istanbul ignore else */
+                    if (attr) {
+                        callback(json ? oe.getProp(json, attr) : state);
+                    } else {
+                        callback(state);
+                    }
+                }
+            });
+        }
+        // Topics array Used for autocomplete in web ui)
+        if (topics.indexOf(topic) === -1 && topic !== (config.name + '/connected')) {
+            topics.push(topic);
+        }
+    });
 
-/* istanbul ignore next */
-bridge._server.on('unpair', username => {
-    log('hap unpaired', username);
-});
+    // Load and create all accessories
+    log.info('loading HomeKit to MQTT mapping file ' + config.mapfile);
+    mapping = JSON.parse(fs.readFileSync(config.mapfile));
+    convertMapping();
+    accCount = 0;
+    let accCountBridged = 0;
+    Object.keys(mapping).forEach(id => {
+        const accConfig = mapping[id];
+        accConfig.id = id;
+        const acc = newAccessory(accConfig);
 
-/* istanbul ignore next */
-bridge._server.on('verify', () => {
-    log('hap verify');
-});
+        let cam = false;
+        const camName = accConfig.name;
+        accConfig.services.forEach((s, i) => {
+            if (s.service === 'CameraRTSPStreamManagement') {
+                cam = true;
+            }
+            if (!addService[s.service]) {
+                loadService(s.service);
+            }
+            if (!s.json) {
+                s.json = {};
+            }
+            log.debug('adding service', s.service, 'to accessory', accConfig.name);
+            addService[s.service](acc, s, String(i));
+        });
 
-if (!config.disableWeb) {
-    // Get all retained messages
+        if (cam) {
+            nextport(config.port, port => {
+                const username = mac(acc.UUID);
+                log.debug('hap publishing camera accessory ' + accConfig.name);
+                acc.publish({
+                    username,
+                    port,
+                    pincode: config.c,
+                    category: Accessory.Categories.CAMERA
+                });
+
+                log.debug('hap publishing camera accessory "' + camName + '" username=' + username, 'port=' + port,
+                    'pincode=' + config.c, 'setupURI=' + acc.setupURI());
+                acc._server.on('listening', () => {
+                    bridgeListening = true;
+                    mqttPub(config.name + '/connected', '2', {retain: true});
+                    log('hap camera', camName, 'listening on port', port);
+
+                    console.log('  \nScan this code with your HomeKit app on your iOS device to pair with', camName);
+                    qrcode.generate(acc.setupURI());
+                    console.log('  ');
+                });
+
+                /* istanbul ignore next */
+                acc._server.on('pair', username => {
+                    log('hap camera', camName, 'paired', username);
+                });
+
+                /* istanbul ignore next */
+                acc._server.on('unpair', username => {
+                    log('hap camera', camName, 'unpaired', username);
+                });
+
+                /* istanbul ignore next */
+                acc._server.on('verify', () => {
+                    log('hap camera', camName, 'verify');
+                });
+            });
+            accCount++;
+        } else {
+            log.debug('addBridgedAccessory ' + accConfig.name);
+            bridge.addBridgedAccessory(acc);
+            accCountBridged++;
+        }
+    });
+    log.info('hap created', accCount, 'Camera Accessories and', accCountBridged, 'Bridged Accessories.');
+
+    bridge.publish({
+        username: config.username,
+        port: config.port,
+        pincode: config.c,
+        category: Accessory.Categories.OTHER
+    });
+    log.debug('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port,
+        'pincode=' + config.c, 'setupURI=' + bridge.setupURI());
+
+    bridge._server.on('listening', () => {
+        bridgeListening = true;
+        mqttPub(config.name + '/connected', '2', {retain: true});
+        log('hap Bridge listening on port', config.port);
+
+        console.log('\nScan this code with your HomeKit app on your iOS device to pair with the bridge');
+        qrcode.generate(bridge.setupURI());
+        console.log('Or enter this code with your HomeKit app on your iOS device to pair with homekit2mqtt:');
+        console.log(chalk.black.bgWhite('                       '));
+        console.log(chalk.black.bgWhite('    ┌────────────┐     '));
+        console.log(chalk.black.bgWhite('    │ ' + config.pincode + ' │     '));
+        console.log(chalk.black.bgWhite('    └────────────┘     '));
+        console.log(chalk.black.bgWhite('                       '));
+        console.log('');
+    });
+
+    bridge._server.on('pair', username => {
+        log('hap bridge paired', username);
+    });
+
+    /* istanbul ignore next */
+    bridge._server.on('unpair', username => {
+        log('hap bridge unpaired', username);
+    });
+
+    /* istanbul ignore next */
+    bridge._server.on('verify', () => {
+        log('hap bridge verify');
+    });
+}
+
+function saveMapping() {
+    fs.writeFileSync(config.mapfile, JSON.stringify(mapping, null, '  '));
+    log.info('saved config to', config.mapfile);
+}
+
+let isStarted = false;
+
+function start() {
+    /* istanbul ignore if */
+    if (isStarted) {
+        log.error('already started');
+        return;
+    }
+    isStarted = true;
+    log.debug('mqtt unsubscribe #');
+    mqtt.unsubscribe('#');
+    createBridge();
+}
+
+/* istanbul ignore if */
+if (config.disableWeb) {
+    createBridge();
+} else {
+    // Get all retained messages (used for autocomplete in web ui)
     log.debug('mqtt subscribe #');
     mqtt.subscribe('#');
-    const topics = [];
-    let retainTimeout = setTimeout(() => {
-        mqtt.unsubscribe('#');
-    }, 500);
+    let retainTimeout = setTimeout(start, 1000);
     mqtt.on('message', (topic, payload, msg) => {
+        if (isStarted) {
+            return;
+        }
         if (msg.retain) {
             clearTimeout(retainTimeout);
-            retainTimeout = setTimeout(() => {
-                log.debug('mqtt unsubscribe #');
-                mqtt.unsubscribe('#');
-            }, 500);
+            retainTimeout = setTimeout(start, 1000);
         }
         if (topics.indexOf(topic) === -1 && topic !== config.name + '/connected') {
             topics.push(topic);
@@ -276,16 +485,25 @@ if (!config.disableWeb) {
         realm: 'homekit2mqtt ui'
     }));
 
+    /* istanbul ignore next */
     app.get('/', (req, res) => {
         res.redirect(301, '/ui');
     });
     app.use('/ui', express.static(path.join(__dirname, '/ui')));
-    app.use('/node_modules', express.static(path.join(__dirname, '/node_modules')));
     app.use('/services.json', express.static(path.join(__dirname, '/services.json')));
+
+    module.paths.forEach(folder => {
+        app.use('/node_modules', express.static(folder));
+    });
 
     app.get('/topics', (req, res) => {
         log.info('http > topics');
         res.send(JSON.stringify(topics));
+    });
+
+    app.get('/categories', (req, res) => {
+        log.info('http > categories');
+        res.send(JSON.stringify(HAP.Accessory.Categories));
     });
 
     app.get('/config', (req, res) => {
@@ -296,14 +514,15 @@ if (!config.disableWeb) {
     app.post('/config', bodyParser.json(), (req, res) => {
         log.info('http < config');
         mapping = req.body;
-        fs.writeFileSync(config.mapfile, JSON.stringify(req.body, null, '  '));
-        log.info('saved config to', config.mapfile);
+        saveMapping();
         res.send('ok');
     });
 
     app.get('/quit', (req, res) => {
         log.info('http < quit');
         res.send('ok');
-        process.exit(0);
+        setTimeout(() => {
+            process.exit(0);
+        }, 250);
     });
 }

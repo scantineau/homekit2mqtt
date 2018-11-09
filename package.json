@@ -1,6 +1,6 @@
 {
   "name": "homekit2mqtt",
-  "version": "0.7.2",
+  "version": "1.1.2",
   "description": "HomeKit to MQTT bridge",
   "main": "index.js",
   "bin": {
@@ -12,13 +12,15 @@
     "node": ">=6.0.0"
   },
   "scripts": {
-    "test": "camo-purge ; xo --space 4 --ignore test/test.js && nyc mocha test/test.js && nyc report --reporter=text-lcov | coveralls --force",
-    "testonly": "mocha test/test.js",
-    "testcov": "nyc mocha test/test.js",
-    "lint": " xo --space 4 --ignore test/test.js",
-    "lintfix": " xo --space 4 --ignore test/test.js --fix"
+    "test": "camo-purge ; xo --ignore test/test.js && nyc mocha --exit test/test.js && nyc report --reporter=text-lcov | coveralls --force",
+    "testonly": "mocha --exit test/test.js",
+    "testcov": "nyc mocha --exit test/test.js",
+    "lint": " xo",
+    "lintfix": " xo --fix",
+    "testbridge": "node index.js -v debug --username CC:22:3D:E3:CA:10 --bridgename testbridge -m ./test/test-config.json",
+    "docs": "node docs/create-readme.js"
   },
-  "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io> (https://github.com/hobbyquaker)",
+  "author": "Sebastian 'hobbyquaker' Raff <hobbyquaker@gmail.com> (https://github.com/hobbyquaker)",
   "contributors": [
     "Anders Eriksson https://github.com/tvillingett",
     "zino4u https://github.com/zino4u",
@@ -26,29 +28,42 @@
     "Erik Granlund https://github.com/erikgranlund",
     "ddrd https://github.com/ddrd",
     "Michael Teeuw https://github.com/MichMich",
-    "Dave Arter https://github.com/davea"
+    "Dave Arter https://github.com/davea",
+    "Matthew Sheffield https://github.com/mattsheffiel",
+    "EdJoPaTo https://github.com/EdJoPaTo",
+    "m17design https://github.com/m17design",
+    "sillyfrog https://github.com/sillyfrog"
   ],
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.18.3",
-    "bootstrap": "^4.1.3",
-    "express": "^4.16.4",
-    "express-basic-auth": "^1.1.6",
+    "bootstrap": "^4.1.1",
+    "chalk": "^2.4.1",
+    "color-convert": "^1.9.2",
+    "express": "^4.16.3",
+    "express-basic-auth": "^1.1.5",
     "font-awesome": "^4.7.0",
-    "free-jqgrid": "^4.15.5",
-    "hap-nodejs": "^0.4.47",
+    "free-jqgrid": "^4.15.4",
+    "hap-nodejs": "0.4.47",
+    "homebridge-camera-ffmpeg": "^0.1.8",
     "jquery": "^3.3.1",
-    "mqtt": "^2.15.0",
+    "mqtt": "^2.18.1",
+    "nextport": "^1.0.0",
+    "obj-ease": "^1.0.1",
+    "popper.js": "^1.14.3",
+    "qrcode-terminal": "^0.12.0",
     "yalm": "^4.1.0",
-    "yargs": "^12.0.2"
+    "yargs": "^12.0.1"
   },
   "devDependencies": {
-    "camo-purge": "^1.0.2",
-    "coveralls": "^3.0.2",
-    "debug": "^4.1.0",
+    "camo-purge": "latest",
+    "changelog": "^1.4.2",
+    "coveralls": "latest",
+    "debug": "^3.1.0",
     "hap-client-cli": "latest",
     "mocha": "latest",
     "nyc": "latest",
+    "request": "^2.88.0",
     "should": "latest",
     "stream-splitter": "latest",
     "xo": "latest"
@@ -72,5 +87,9 @@
   "bugs": {
     "url": "https://github.com/hobbyquaker/homekit2mqtt/issues"
   },
-  "homepage": "https://github.com/hobbyquaker/homekit2mqtt"
+  "homepage": "https://github.com/hobbyquaker/homekit2mqtt",
+  "xo": {
+    "space": 4,
+    "ignore": []
+  }
 }

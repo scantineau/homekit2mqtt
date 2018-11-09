@@ -24,20 +24,53 @@ Object.keys(services).forEach(s => {
 
     output += 'payload\n\n';
     services[s].payload.forEach(p => {
+        const outputArr = [];
         output += '* ' + p.name;
         if (p.optional) {
-            output += ' (optional';
+            outputArr.push('optional');
         }
-        if (p.default) {
-            output += ', default: `' + p.default + '`)';
-        } else if (p.optional) {
-            output += ')';
+        if (typeof p.default !== 'undefined') {
+            outputArr.push('default: `' + p.default + '`');
+        }
+        if (outputArr.length > 0) {
+            output += ' (' + outputArr.join(', ') + ')';
         }
         if (p.desc) {
             output += '    \n  ' + p.desc;
         }
         output += '\n';
     });
+
+    output += '\n';
+
+    if (services[s].config) {
+        output += 'config\n\n';
+        services[s].config.forEach(c => {
+            const outputArr = [];
+            output += '* ' + c.name + ' ';
+            if (c.optional) {
+                outputArr.push('optional');
+            }
+            if (c.default) {
+                outputArr.push('default: `' + c.default + '`');
+            }
+            if (outputArr.length > 0) {
+                output += ' (' + outputArr.join(', ') + ')';
+            }
+            if (c.enum) {
+                output += '    \n  ';
+                c.enum.forEach((o, i) => {
+                    output += (i > 0 ? ', ' : '') + i + ' = ' + o;
+                });
+            }
+            if (c.desc) {
+                output += '    \n  ' + c.desc;
+            }
+            output += '\n';
+        });
+        output += '\n';
+    }
+
     output += '\n';
 });
 
