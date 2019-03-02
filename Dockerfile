@@ -1,6 +1,6 @@
 #see https://github.com/marcoraddatz/homebridge-docker/blob/master/Dockerfile
 
-FROM node:9.2-stretch AS base
+FROM node:10-stretch AS base
 
 # Set environment variables
 ENV DEBIAN_FRONTEND noninteractive
