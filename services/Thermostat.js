@@ -97,9 +97,11 @@ module.exports = function (iface) {
                             settings.payload.TargetHeatingCoolingState[String(value)] !== 'undefined') {
                             value = settings.payload.TargetHeatingCoolingState[value];
                         }
+
                         log.debug('> mqtt', settings.topic.setTargetHeatingCoolingState, value);
                         mqttPub(settings.topic.setTargetHeatingCoolingState, value, settings.mqttPublishOptions);
                     }
+
                     callback();
                 });
         }

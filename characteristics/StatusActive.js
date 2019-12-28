@@ -18,6 +18,7 @@ module.exports = function (obj, iface) {
                 if (settings.payload.invertActive) {
                     act = !act;
                 }
+
                 log.debug('> hap re_get', settings.name, 'StatusActive', act);
                 callback(null, act);
             });
@@ -27,6 +28,7 @@ module.exports = function (obj, iface) {
             if (settings.payload.invertActive) {
                 act = !act;
             }
+
             log.debug('> hap update', settings.name, 'StatusActive', act);
             acc.getService(subtype)
                 .updateCharacteristic(Characteristic.StatusActive, act);

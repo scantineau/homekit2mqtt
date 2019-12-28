@@ -187,33 +187,33 @@ $(document).ready(() => {
             $('#edit, #del').attr('disabled', true);
         },
 
-      beforeSelectRow (rowid) {
-          return ($(this).getGridParam('selrow') !== rowid);
+        beforeSelectRow(rowid) {
+            return ($(this).getGridParam('selrow') !== rowid);
         }
 
     }).jqGrid('navGrid', {
-      add: false,
-      edit: false,
-      del: false,
-      search: false,
-      refresh: false
+        add: false,
+        edit: false,
+        del: false,
+        search: false,
+        refresh: false
     }).jqGrid('navButtonAdd', {
         caption: 'Add',
         buttonicon: 'fa-plus-square',
         title: 'Add accessory',
         id: 'addAcc'
     }).jqGrid('navButtonAdd', {
-      caption: 'Stop',
-      buttonicon: 'fa-stop-circle-o',
-      title: 'Stop homekit2mqtt',
-      id: 'stop'
+        caption: 'Stop',
+        buttonicon: 'fa-stop-circle-o',
+        title: 'Stop homekit2mqtt',
+        id: 'stop'
     })
         .jqGrid('filterToolbar', {defaultSearch: 'cn', ignoreCase: true, searchOnEnter: false})
         .jqGrid('gridResize');
 
-  $.get('/config', body => {
-      config = JSON.parse(body);
-      loadConfig();
+    $.get('/config', body => {
+        config = JSON.parse(body);
+        loadConfig();
     });
 
     const $addAcc = $('#addAcc');
@@ -235,35 +235,35 @@ $(document).ready(() => {
                 numServices: numServices(id)
             });
         });
-      $gridServices.jqGrid('sortGrid', 'name', true, 'asc');
+        $gridServices.jqGrid('sortGrid', 'name', true, 'asc');
     }
 
-  $.get('/services.json', body => {
-      services = body;
-      Object.keys(services).forEach(service => {
-          $selectService.append('<option>' + service + '</option>');
+    $.get('/services.json', body => {
+        services = body;
+        Object.keys(services).forEach(service => {
+            $selectService.append('<option>' + service + '</option>');
         });
 
-      $selectService.change(function () {
-          createTemplate($(this).val());
+        $selectService.change(function () {
+            createTemplate($(this).val());
         });
     });
 
-  function createTemplate (s) {
-      console.log(s);
-      $('#selectTemplate').html('<option>none</option>');
-      $('#selectTemplate').val('none');
-      $('.name-template, .select-template').hide();
-      if (template[s]) {
-          $('.select-template').show();
-          Object.keys(template[s]).forEach(t => {
-              $('#selectTemplate').append('<option>' + t + '</option>');
+    function createTemplate(s) {
+        console.log(s);
+        $('#selectTemplate').html('<option>none</option>');
+        $('#selectTemplate').val('none');
+        $('.name-template, .select-template').hide();
+        if (template[s]) {
+            $('.select-template').show();
+            Object.keys(template[s]).forEach(t => {
+                $('#selectTemplate').append('<option>' + t + '</option>');
             });
-          $('#selectTemplate').change(function () {
-              if ($(this).val() === 'none') {
-                  $('.name-template').hide();
+            $('#selectTemplate').change(function () {
+                if ($(this).val() === 'none') {
+                    $('.name-template').hide();
                 } else {
-                  $('.name-template').show();
+                    $('.name-template').show();
                 }
             });
         }
@@ -334,11 +334,12 @@ $(document).ready(() => {
                 }
             });
         }
-      $dialogConfig.modal();
+
+        $dialogConfig.modal();
     });
 
-  function tplReplace (val, name) {
-      return val.replace(/%name%/g, name);
+    function tplReplace(val, name) {
+        return val.replace(/%name%/g, name);
     }
 
     $('#delete').click(() => {
@@ -357,13 +358,13 @@ $(document).ready(() => {
             contentType: 'application/json',
             data: JSON.stringify(config)
         });
-      $dialogConfirmDel.modal('hide');
+        $dialogConfirmDel.modal('hide');
     });
 
-  $stop.click(() => {
-      $.get('/quit');
-      setTimeout(() => {
-          location.reload();
+    $stop.click(() => {
+        $.get('/quit');
+        setTimeout(() => {
+            location.reload();
         }, 3000);
     });
 
@@ -403,15 +404,19 @@ $(document).ready(() => {
             if (!config[id].services) {
                 config[id].services = [];
             }
+
             if (config[id].serial === '') {
                 delete config[id].serial;
             }
+
             if (config[id].model === '') {
                 delete config[id].model;
             }
+
             if (config[id].manufacturer === '') {
                 delete config[id].manufacturer;
             }
+
             if (config[id].topicIdentify === '') {
                 delete config[id].topicIdentify;
             }
@@ -458,7 +463,7 @@ $(document).ready(() => {
                 props: {}
             };
 
-          const s = services[service];
+            const s = services[service];
 
             if (s.topic) {
                 s.topic.forEach(topic => {
@@ -469,6 +474,7 @@ $(document).ready(() => {
                     }
                 });
             }
+
             if (s.payload) {
                 s.payload.forEach(payload => {
                     const type = $('#payload-type-' + payload.name).val();
@@ -488,6 +494,7 @@ $(document).ready(() => {
                             break;
                         default:
                     }
+
                     if (typeof val !== 'undefined') {
                         result.payload[payload.name] = val;
                     }
@@ -517,9 +524,11 @@ $(document).ready(() => {
                     if (typeof p.minValue !== 'undefined') {
                         result.props[p.name].minValue = parseFloat($(`#config-${p.name}-minValue`).val());
                     }
+
                     if (typeof p.maxValue !== 'undefined') {
                         result.props[p.name].maxValue = parseFloat($(`#config-${p.name}-maxValue`).val());
                     }
+
                     if (typeof p.validValues !== 'undefined') {
                         result.props[p.name].validValues = [];
                         for (let i = 0; i < p.validValues.length; i++) {
@@ -577,6 +586,7 @@ $(document).ready(() => {
                 } else {
                     $('#payloadIdentify-boolean').val('false');
                 }
+
                 break;
             case 'number':
                 $('#payloadIdentify-type').val('Number').trigger('change');
@@ -605,10 +615,10 @@ $(document).ready(() => {
         console.log(s);
         createServiceForm(s.service);
 
-      $id.attr('disabled', true);
-      $id.val(id);
-      $selectService.val(s.service);
-      $name.val(s.name);
+        $id.attr('disabled', true);
+        $id.val(id);
+        $selectService.val(s.service);
+        $name.val(s.name);
 
         if (s.topic) {
             Object.keys(s.topic).forEach(topic => {
@@ -636,6 +646,7 @@ $(document).ready(() => {
                         }
                     });
                 }
+
                 type = type || typeof s.payload[payload];
                 switch (type) {
                     case 'boolean':
@@ -671,12 +682,14 @@ $(document).ready(() => {
                 if (typeof obj.minValue !== 'undefined') {
                     $(`#config-${p}-minValue`).val(obj.minValue);
                 }
+
                 if (typeof obj.maxValue !== 'undefined') {
                     $(`#config-${p}-maxValue`).val(obj.maxValue);
                 }
+
                 if (typeof obj.validValues !== 'undefined') {
                     $(`[id^=config-${p}-validValues-]`).each(function () {
-                        if (obj.validValues.indexOf(parseInt($(this).val(), 10)) === -1) {
+                        if (!obj.validValues.includes(parseInt($(this).val(), 10))) {
                             $(this).removeAttr('checked');
                         } else {
                             $(this).attr('checked', true);
@@ -686,12 +699,12 @@ $(document).ready(() => {
             });
         }
 
-      $('#manufacturer').val(s.manufacturer);
-      $('#model').val(s.model);
-      $('#serial').val(s.serial);
+        $('#manufacturer').val(s.manufacturer);
+        $('#model').val(s.model);
+        $('#serial').val(s.serial);
 
-      $dialogConfig.modal({
-          backdrop: 'static'
+        $dialogConfig.modal({
+            backdrop: 'static'
         });
     }
 
@@ -714,6 +727,7 @@ $(document).ready(() => {
             } else {
                 $idAcc.removeClass('is-invalid');
             }
+
             $nameAcc.removeClass('is-invalid');
             Object.keys(config).forEach(i => {
                 if (name === '' || config[i].name === name) {
@@ -722,7 +736,8 @@ $(document).ready(() => {
                 }
             });
         }
-      return valid;
+
+        return valid;
     }
 
     function validate() {
@@ -731,6 +746,7 @@ $(document).ready(() => {
             $name.removeClass('is-invalid');
             return true;
         }
+
         $name.addClass('is-invalid');
         return false;
     }
@@ -807,7 +823,7 @@ $(document).ready(() => {
                            <div class="col-sm-4"></div><div class="col-sm-8 attr-desc">${p.desc || ''}</div>
                        </div>
                    </div>`);
-              createPayloadInput(p, $('#payload-input-' + p.name));
+                createPayloadInput(p, $('#payload-input-' + p.name));
             });
         }
 
@@ -864,7 +880,7 @@ $(document).ready(() => {
                             <label class="form-check-label" for="config-${p.name}-validValues-${i}">${v}</label></div>`;
                     });
 
-                    row += `</div></div>`;
+                    row += '</div></div>';
                     $configuration.append(row);
                 }
             });
@@ -891,8 +907,8 @@ $(document).ready(() => {
         $elem.append(html);
     }
 
-  function createPayloadInput (p, $elem) {
-      const html = `<div class="input-group">
+    function createPayloadInput(p, $elem) {
+        const html = `<div class="input-group">
       <span class="input-group-addon">
         <select id="payload-type-${p.name}" data-payload="${p.name}" class="payload-type form-control" ${p.type ? 'disabled' : ''}>
           <option value="undefined">Undefined</option>
@@ -922,8 +938,8 @@ $(document).ready(() => {
         $elem.find('.payload.' + type).show();
     }
 
-  resizeGrid();
-  $(window).resize(resizeGrid);
+    resizeGrid();
+    $(window).resize(resizeGrid);
 
     function resizeGrid() {
         const height = $(window).height() - 128;

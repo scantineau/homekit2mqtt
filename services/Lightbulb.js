@@ -64,6 +64,7 @@ module.exports = function (iface) {
                         }, 300);
                     }
                 }
+
                 callback();
             });
 

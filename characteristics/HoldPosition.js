@@ -14,6 +14,7 @@ module.exports = function (obj, iface) {
                 } else if (typeof settings.payload.holdPositionFalse !== 'undefined' && !value) {
                     value = settings.payload.holdPositionFalse;
                 }
+
                 log.debug('> mqtt', settings.topic.setHoldPosition, value);
                 mqttPub(settings.topic.setHoldPosition, value);
                 callback();

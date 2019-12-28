@@ -16,6 +16,7 @@ module.exports = function (obj, iface) {
             if (settings.payload.roundTarget) {
                 value = Math.round(value);
             }
+
             mqttPub(settings.topic.setTargetPosition, value);
             callback();
         });

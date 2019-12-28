@@ -18,6 +18,7 @@ module.exports = function (obj, iface) {
                 state = Characteristic.PositionState.STOPPED;
                 log.debug('> hap update', settings.name, 'PositionState.STOPPED');
             }
+
             acc.getService(subtype)
                 .updateCharacteristic(Characteristic.PositionState, state);
         });

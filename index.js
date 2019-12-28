@@ -31,6 +31,7 @@ function mqttStatus(topic, attr) { // Holds the payloads of the last-received me
     if (attr && typeof mqttStatusRaw[topic] === 'object') {
         return oe.getProp(mqttStatusRaw[topic], attr);
     }
+
     return mqttStatus[topic];
 }
 
@@ -91,6 +92,7 @@ function typeGuess(payload) {
     } else {
         state = parseFloat(payload);
     }
+
     return state;
 }
 
@@ -103,6 +105,7 @@ function mqttSub(topic, /* string, optional, default "val" */ attr, callback) {
         log.error('trying to subscribe empty topic');
         return;
     }
+
     /* istanbul ignore if */
     if (typeof attr === 'function') {
         callback = attr;
@@ -112,6 +115,7 @@ function mqttSub(topic, /* string, optional, default "val" */ attr, callback) {
     } else {
         attr = 'val';
     }
+
     /* istanbul ignore else */
     if (typeof callback === 'function') {
         /* istanbul ignore if */
@@ -143,6 +147,7 @@ function mqttPub(topic, payload, options) {
         } else if (typeof payload !== 'string') {
             payload = String(payload);
         }
+
         log.debug('> mqtt', topic, payload);
 
         /* istanbul ignore if */
@@ -150,8 +155,10 @@ function mqttPub(topic, payload, options) {
             if (!options) {
                 options = {};
             }
+
             options.retain = true;
         }
+
         mqtt.publish(topic, payload, options, err => {
             /* istanbul ignore next */
             if (err) {
@@ -169,6 +176,7 @@ const {uuid, Bridge, Accessory, Service, Characteristic} = HAP;
 if (config.storagedir) {
     log.info('using directory ' + config.storagedir + ' for persistent storage');
 }
+
 // If storagedir is not set it uses HAP-Nodejs default
 // (usually /usr/local/lib/node_modules/homekit2mqtt/node_modules/node-persist/persist)
 HAP.init(config.storagedir || undefined);
@@ -191,6 +199,7 @@ function identify(settings, paired, callback) {
         log.debug('> mqtt', settings.topicIdentify, settings.payloadIdentify);
         mqttPub(settings.topicIdentify, settings.payloadIdentify);
     }
+
     callback();
 }
 
@@ -214,12 +223,15 @@ function newAccessory(settings) {
             .setCharacteristic(Characteristic.Model, settings.model || '-')
             .setCharacteristic(Characteristic.SerialNumber, settings.serial || '-');
     }
+
     if (!settings.payload) {
         settings.payload = {};
     }
+
     if (!settings.config) {
         settings.config = {};
     }
+
     /* istanbul ignore next */
     acc.on('identify', (paired, callback) => {
         identify(settings, paired, callback);
@@ -289,11 +301,12 @@ function createBridge() {
     mqtt.on('message', (topic, payload) => {
         payload = payload.toString();
         let json;
-        if (payload.indexOf('{') !== -1 && !config.disableJsonParse) {
+        if (payload.includes('{') && !config.disableJsonParse) {
             try {
                 json = JSON.parse(payload);
-            } catch (err) {}
+            } catch (error) {}
         }
+
         const state = typeGuess(payload);
         log.debug('< mqtt', topic, state, payload);
 
@@ -315,8 +328,9 @@ function createBridge() {
                 }
             });
         }
+
         // Topics array Used for autocomplete in web ui)
-        if (topics.indexOf(topic) === -1 && topic !== (config.name + '/connected')) {
+        if (!topics.includes(topic) && topic !== (config.name + '/connected')) {
             topics.push(topic);
         }
     });
@@ -338,12 +352,15 @@ function createBridge() {
             if (s.service === 'CameraRTSPStreamManagement') {
                 cam = true;
             }
+
             if (!addService[s.service]) {
                 loadService(s.service);
             }
+
             if (!s.json) {
                 s.json = {};
             }
+
             log.debug('adding service', s.service, 'to accessory', accConfig.name);
             addService[s.service](acc, s, String(i));
         });
@@ -448,6 +465,7 @@ function start() {
         log.error('already started');
         return;
     }
+
     isStarted = true;
     log.debug('mqtt unsubscribe #');
     mqtt.unsubscribe('#');
@@ -466,11 +484,13 @@ if (config.disableWeb) {
         if (isStarted) {
             return;
         }
+
         if (msg.retain) {
             clearTimeout(retainTimeout);
             retainTimeout = setTimeout(start, 1000);
         }
-        if (topics.indexOf(topic) === -1 && topic !== config.name + '/connected') {
+
+        if (!topics.includes(topic) && topic !== config.name + '/connected') {
             topics.push(topic);
         }
     });

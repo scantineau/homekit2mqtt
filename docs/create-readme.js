@@ -15,9 +15,11 @@ Object.keys(services).forEach(s => {
         if (t.optional) {
             output += ' (optional)';
         }
+
         if (t.desc) {
             output += '    \n  ' + t.desc;
         }
+
         output += '\n';
     });
     output += '\n';
@@ -29,15 +31,19 @@ Object.keys(services).forEach(s => {
         if (p.optional) {
             outputArr.push('optional');
         }
+
         if (typeof p.default !== 'undefined') {
             outputArr.push('default: `' + p.default + '`');
         }
+
         if (outputArr.length > 0) {
             output += ' (' + outputArr.join(', ') + ')';
         }
+
         if (p.desc) {
             output += '    \n  ' + p.desc;
         }
+
         output += '\n';
     });
 
@@ -51,21 +57,26 @@ Object.keys(services).forEach(s => {
             if (c.optional) {
                 outputArr.push('optional');
             }
+
             if (c.default) {
                 outputArr.push('default: `' + c.default + '`');
             }
+
             if (outputArr.length > 0) {
                 output += ' (' + outputArr.join(', ') + ')';
             }
+
             if (c.enum) {
                 output += '    \n  ';
                 c.enum.forEach((o, i) => {
                     output += (i > 0 ? ', ' : '') + i + ' = ' + o;
                 });
             }
+
             if (c.desc) {
                 output += '    \n  ' + c.desc;
             }
+
             output += '\n';
         });
         output += '\n';
