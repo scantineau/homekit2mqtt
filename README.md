@@ -26,7 +26,7 @@ update from <=0.9.3 to >=0.9.4 you have to delete the persistence files and dele
     
     from docker hub: docker pull matsekberg/homekit2mqtt:latest
 
-    docker run -d --env-file /Users/meg/mconfig/ha/homekit.env --mount type=bind,source=/Users/meg/mconfig/ha/hk2mqttconfig.json,target=/hk2mqttconfig.json homekit2mqtt
+    docker run -d -p 51888:51888 -p 51826:51826 --env-file /Users/meg/mconfig/ha/homekit.env --mount type=bind,source=/Users/meg/mconfig/ha/hk2mqttconfig.json,target=/hk2mqttconfig.json homekit2mqtt
     
 
 ## Installation
