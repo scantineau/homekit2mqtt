@@ -100,7 +100,7 @@ function mqttSub(topic, /* string, optional, default "val" */ attr, callback) {
     topic = String(topic);
     /* istanbul ignore next */
     if (topic === '') {
-        log.error('trying to subscribe empty topic');
+        log.error('trying to subscribe empty topic', attr);
         return;
     }
     /* istanbul ignore if */
