@@ -19,6 +19,20 @@ I'm using this to control a multitude of MQTT-connected "Things" in my home auto
 added, please give your Home app a few minutes to get updates, if the accessories don't work at all anymore after an 
 update from <=0.9.3 to >=0.9.4 you have to delete the persistence files and delete and re-add the bridge in iOS...:-(
 
+
+## Build and run local Docker container
+
+    docker build -t homekit2mqtt .
+
+    docker run --env-file /Users/meg/mconfig/ha/homekit.env -v /Volumes/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
+
+    docker run --env-file ./homekit.env -v $PWD:/data  -it homekit2mqtt 
+
+    docker run --env-file /Volumes/data/smarthome/homekit2mqtt.env -v /Volumes/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
+
+    docker run --env-file /volume1/data/smarthome/homekit2mqtt.env -v /volume1/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
+
+
 ## Installation
 
 **Requirements** 
@@ -987,17 +1001,6 @@ payload
 * currentPositionFactor (optional, default: `1`)
 * positionStatusDecreasing (optional)
 * positionStatusIncreasing (optional)
-
-
-## Build and run local Docker container
-
-    docker build -t homekit2mqtt .
-
-    docker run --env-file ./homekit.env -v $PWD:/data  -it homekit2mqtt 
-
-    docker run --env-file /Volumes/data/smarthome/homekit2mqtt.env -v /Volumes/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
-
-    docker run --env-file /volume1/data/smarthome/homekit2mqtt.env -v /volume1/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
 
 
 ## License
