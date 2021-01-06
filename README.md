@@ -24,13 +24,13 @@ update from <=0.9.3 to >=0.9.4 you have to delete the persistence files and dele
 
     docker build -t homekit2mqtt .
 
-    docker run --env-file /Users/meg/mconfig/ha/homekit.env -v /Volumes/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
+    docker run --env-file /Users/meg/mconfig/ha/homekit.env -v /Users/meg/.homekit:/data --name homekit2mqtt matsekberg/homekit2mqtt
 
     docker run --env-file ./homekit.env -v $PWD:/data  -it homekit2mqtt 
 
-    docker run --env-file /Volumes/data/smarthome/homekit2mqtt.env -v /Volumes/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
+    docker run --env-file /Volumes/data/smarthome/homekit2mqtt.env -v /Volumes/data/smarthome:/data --name homekit2mqtt matsekberg/homekit2mqtt
 
-    docker run --env-file /volume1/data/smarthome/homekit2mqtt.env -v /volume1/data/smarthome:/data --name homekit2mqtt krambox/homekit2mqtt
+    docker run --env-file /volume1/data/smarthome/homekit2mqtt.env -v /volume1/data/smarthome:/data --name homekit2mqtt matsekberg/homekit2mqtt
 
 
 ## Installation
