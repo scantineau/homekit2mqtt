@@ -53,7 +53,7 @@ jobs:
           file: ./Dockerfile
           builder: ${{ steps.buildx.outputs.name }}
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/flcbot:${{ steps.release.outputs.tag_name }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/homekit2mqtt:${{ steps.release.outputs.tag_name }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       -
