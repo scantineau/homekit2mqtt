@@ -71,10 +71,16 @@
       {"name": "maxFPS", "optional": false, "type": "Number", "default": "10", "desc": "the maximum frame rate of the stream"},
       {"name": "maxBitrate", "optional": false, "type": "Number", "default": "300", "desc": "the maximum bit rate of the stream in kbit/s"},
       {"name": "vcodec", "optional": false, "type": "String", "default": "libx264", "desc": "If you're running on a RPi with the omx version of ffmpeg installed, you can change to \"h264_omx\" for hardware accelerated video codec"},
+      {"name": "acodec", "optional": false, "type": "String", "default": "libfdk_aac"},
       {"name": "audio", "optional": false, "type": "Boolean", "default": false, "desc": "can be set to true to enable audio streaming from camera. To use audio ffmpeg must be compiled with --enable-libfdk-aac, see https://github.com/KhaosT/homebridge-camera-ffmpeg/wiki"},
       {"name": "packetSize", "optional": false, "type": "Number", "default": "1316", "desc": "If audio or video is choppy try a smaller value, set to a multiple of 188"},
       {"name": "debug", "optional": false, "type": "Boolean", "default": false, "desc": "Show the output of ffmpeg in the log"},
-      {"name": "videoProcessor", "optional": false, "type": "String", "default": "ffmpeg"}
+      {"name": "videoProcessor", "optional": false, "type": "String", "default": "ffmpeg"},
+      {"name": "vflip", "optional": false, "type": "Boolean", "default": false},
+      {"name": "hflip", "optional": false, "type": "Boolean", "default": false},
+      {"name": "mapvideo", "optional": false, "type": "String", "default": "0:0"},
+      {"name": "mapaudio", "optional": false, "type": "String", "default": "0:1"},
+      {"name": "additionalCommandline", "optional": true, "type": "String", "default": ""}
     ]
   },
   "CarbonDioxideSensor": {

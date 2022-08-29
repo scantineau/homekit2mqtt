@@ -18,6 +18,7 @@ module.exports = function (obj, iface) {
                 if (settings.payload.invertFault) {
                     bool = !bool;
                 }
+
                 const fault = bool ?
                     Characteristic.StatusFault.GENERAL_FAULT :
                     Characteristic.StatusFault.NO_FAULT;
@@ -30,6 +31,7 @@ module.exports = function (obj, iface) {
             if (settings.payload.invertFault) {
                 bool = !bool;
             }
+
             const fault = bool ?
                 Characteristic.StatusFault.GENERAL_FAULT :
                 Characteristic.StatusFault.NO_FAULT;

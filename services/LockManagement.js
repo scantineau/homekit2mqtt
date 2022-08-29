@@ -9,12 +9,15 @@ module.exports = function (iface) {
         if (typeof settings.payload.doorClosed === 'undefined') {
             settings.payload.doorClosed = Characteristic.CurrentDoorState.CLOSED;
         }
+
         if (typeof settings.payload.doorOpening === 'undefined') {
             settings.payload.doorOpening = Characteristic.CurrentDoorState.OPENING;
         }
+
         if (typeof settings.payload.doorClosing === 'undefined') {
             settings.payload.doorClosing = Characteristic.CurrentDoorState.CLOSING;
         }
+
         if (typeof settings.payload.doorStopped === 'undefined') {
             settings.payload.doorStopped = Characteristic.CurrentDoorState.STOPPED;
         }
@@ -69,6 +72,7 @@ module.exports = function (iface) {
                     }
                 });
         }
+
         const obj = {acc, settings, subtype};
 
         require('../characteristics')('LockControlPoint', obj, iface);

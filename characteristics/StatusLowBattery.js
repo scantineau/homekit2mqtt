@@ -14,6 +14,7 @@ module.exports = function (obj, iface) {
                 if (settings.payload.invertLowBattery) {
                     bool = !bool;
                 }
+
                 const bat = bool ?
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                     Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;
@@ -26,6 +27,7 @@ module.exports = function (obj, iface) {
             if (settings.payload.invertLowBattery) {
                 bool = !bool;
             }
+
             const bat = bool ?
                 Characteristic.StatusLowBattery.BATTERY_LEVEL_LOW :
                 Characteristic.StatusLowBattery.BATTERY_LEVEL_NORMAL;

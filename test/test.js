@@ -45,10 +45,12 @@ function mqttSubscribe(topic, callback) {
         mqttSubscriptions[topic].push(callback);
         return mqttSubscriptions[topic] - 1;
     }
+
     mqttSubscriptions[topic] = [callback];
     mqtt.subscribe(topic);
     return 0;
 }
+
 mqtt.on('message', (topic, payload) => {
     if (mqttSubscriptions[topic]) {
         mqttSubscriptions[topic].forEach((callback, index) => {
@@ -71,6 +73,7 @@ function subscribe(type, rx, cb) {
     } else if (type === 'homekit') {
         homekitSubscriptions[subIndex] = {rx, cb};
     }
+
     matchSubscriptions(type);
     return subIndex;
 }
@@ -93,9 +96,11 @@ function matchSubscriptions(type, data) {
         subs = homekitSubscriptions;
         buf = homekitBuffer;
     }
+
     if (data) {
         buf.push(data);
     }
+
     buf.forEach((line, index) => {
         Object.keys(subs).forEach(key => {
             const sub = subs[key];
@@ -123,12 +128,14 @@ function startHomekit(args) {
         if (homekitOutput) {
             console.log('homekit', data.toString());
         }
+
         matchSubscriptions('homekit', data.toString());
     });
     homekitPipeErr.on('token', data => {
         if (homekitOutput) {
             console.log('homekit', data.toString());
         }
+
         matchSubscriptions('homekit', data.toString());
     });
 }
@@ -275,9 +282,9 @@ function initTest(mapFile, cam) {
                     pair.stderr.on('data', data => {
                         console.log('pair stderr', data.toString());
                     });
-                } catch (err) {
-                    console.log('--- err', err);
-                    done(err);
+                } catch (error) {
+                    console.log('--- err', error);
+                    done(error);
                 }
             });
         });
@@ -291,12 +298,14 @@ function initTest(mapFile, cam) {
                     if (err) {
                         done(err);
                     }
+
                     let clientAccs;
                     try {
                         clientAccs = JSON.parse(stdout).accessories;
-                    } catch (err) {
-                        done(err);
+                    } catch (error) {
+                        done(error);
                     }
+
                     aid = {};
                     iid = {};
                     clientAccs.forEach(acc => {

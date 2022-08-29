@@ -20,6 +20,7 @@ module.exports = function (iface) {
                         const range = max - min;
                         val = ((val - min) / range) * 100;
                     }
+
                     log.debug('> hap re_get', settings.name, 'BatteryLevel', val);
                     callback(null, val);
                 });
@@ -32,6 +33,7 @@ module.exports = function (iface) {
                     const range = max - min;
                     val = ((val - min) / range) * 100;
                 }
+
                 log.debug('> hap update', settings.name, 'BatteryLevel', val);
                 acc.getService(subtype)
                     .updateCharacteristic(Characteristic.BatteryLevel, val);

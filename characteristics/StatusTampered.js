@@ -14,6 +14,7 @@ module.exports = function (obj, iface) {
                 if (settings.payload.invertTampered) {
                     bool = !bool;
                 }
+
                 const tampered = bool ?
                     Characteristic.StatusTampered.TAMPERED :
                     Characteristic.StatusTampered.NOT_TAMPERED;
@@ -26,6 +27,7 @@ module.exports = function (obj, iface) {
             if (settings.payload.invertTampered) {
                 bool = !bool;
             }
+
             const tampered = bool ?
                 Characteristic.StatusTampered.TAMPERED :
                 Characteristic.StatusTampered.NOT_TAMPERED;

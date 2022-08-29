@@ -26,9 +26,16 @@ module.exports = function (iface) {
                 maxFPS: settings.config.maxFPS || 10,
                 debug: settings.config.debug,
                 vcodec: settings.config.vcodec || 'libx264',
+                acodec: settings.config.acoded || 'libfdk_aac',
                 audio: settings.config.audio,
                 packetSize: settings.config.packetSize || 1316,
-                maxBitrate: settings.config.maxBitrate || 300
+                maxBitrate: settings.config.maxBitrate || 300,
+                additionalCommandline: settings.config.additionalCommandline || '-tune zerolatency',
+                vflip: settings.config.vflip || false,
+                hflip: settings.config.hflip || false,
+                mapvideo: settings.config.mapvideo || '0:0',
+                mapaudio: settings.config.mapaudio || '0:1',
+                videoFilter: settings.config.videoFilter || null,
             }
         };
 

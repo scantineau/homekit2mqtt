@@ -9,6 +9,7 @@ module.exports = function (obj, iface) {
             log.debug('converting', value, '°F to °C');
             return (value - 32) / 1.8;
         }
+
         return value;
     }
 
