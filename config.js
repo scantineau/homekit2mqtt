@@ -10,6 +10,7 @@ const config = require('yargs')
     .describe('p', 'port homekit2mqtt is listening on')
     .describe('w', 'port webserver is listening on')
     .describe('x', 'disable webserver')
+    .describe('d', 'mdns advertise ip')
     .describe('disable-json-parse', 'disable json parsing of received mqtt payloads')
     .boolean('disable-json-parse')
     .describe('insecure', 'allow tls connections with invalid certificates')
@@ -29,7 +30,8 @@ const config = require('yargs')
         p: 'port',
         s: 'storagedir',
         w: 'web-port',
-        x: 'disable-web'
+        x: 'disable-web',
+        d: 'mdns'
     })
     .default({
         c: '031-45-154',

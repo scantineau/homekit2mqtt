@@ -416,7 +416,8 @@ function createBridge() {
         username: config.username,
         port: config.port,
         pincode: config.c,
-        category: Accessory.Categories.OTHER
+        category: Accessory.Categories.OTHER,
+        mdns, config.mdns
     });
     log.debug('hap publishing bridge "' + config.bridgename + '" username=' + config.username, 'port=' + config.port,
         'pincode=' + config.c, 'setupURI=' + bridge.setupURI());
